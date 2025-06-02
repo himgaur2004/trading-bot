@@ -1,34 +1,25 @@
-# Crypto Trading Bot
+# Crypto Trading Bot Dashboard
 
-A sophisticated cryptocurrency trading bot implementing multiple advanced trading strategies:
-
-1. Grid Trading Strategy
-2. Arbitrage Strategy
-3. Sentiment Analysis Strategy
-4. Order Flow Strategy
-5. Market Making Strategy
+A comprehensive cryptocurrency trading dashboard built with Streamlit, featuring real-time market data, portfolio tracking, and multiple trading strategies.
 
 ## Features
 
-- Multiple trading strategies with ensemble combination
-- Real-time market data analysis
-- Advanced risk management
-- Position sizing and management
-- Stop loss and take profit management
-- Comprehensive logging and monitoring
-- Support for multiple exchanges (via CCXT)
-- Testnet/paper trading support
+- Real-time portfolio tracking
+- Multiple trading strategies:
+  - Moving Average Crossover
+  - RSI Strategy
+  - MACD Strategy
+  - Bollinger Bands
+  - Custom combined strategy
+- Interactive strategy backtesting
+- Performance metrics visualization
+- Risk management settings
 
-## Requirements
-
-- Python 3.8+
-- Dependencies listed in requirements.txt
-
-## Installation
+## Local Development
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/yourusername/crypto-trading-bot.git
 cd crypto-trading-bot
 ```
 
@@ -43,90 +34,41 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Create a .env file with your configuration:
-```bash
-EXCHANGE_API_KEY=your_api_key
-EXCHANGE_API_SECRET=your_api_secret
-EXCHANGE_NAME=binance  # or other supported exchange
-TRADING_PAIRS=BTC/USDT,ETH/USDT  # comma-separated pairs
+4. Set up your CoinDCX API credentials:
+- Create a `.streamlit/secrets.toml` file
+- Add your API credentials:
+```toml
+COINDCX_API_KEY = "your_api_key"
+COINDCX_API_SECRET = "your_api_secret"
 ```
 
-## Usage
-
-1. Start the bot:
+5. Run the dashboard:
 ```bash
-python main.py
+streamlit run dashboard/main.py
 ```
 
-2. Monitor the logs:
-- Trading activity: trading_bot.log
-- Errors: error.log
+## Deployment
+
+The dashboard is deployed on Streamlit Cloud. To deploy your own instance:
+
+1. Fork this repository
+2. Sign up for [Streamlit Cloud](https://streamlit.io/cloud)
+3. Connect your GitHub account
+4. Deploy the app by selecting your forked repository
+5. Add your API credentials in the Streamlit Cloud secrets management
 
 ## Configuration
 
-The bot can be configured through:
+The dashboard can be configured through the Settings page in the UI or by modifying the following files:
+- `.streamlit/config.toml`: Streamlit configuration
+- `dashboard/utils/strategy_handler.py`: Trading strategy parameters
+- `dashboard/utils/data_handler.py`: Data fetching and processing settings
 
-1. Environment variables (.env file)
-2. Configuration classes in config.py
-3. Strategy-specific parameters in each strategy file
+## Contributing
 
-### Key Configuration Options
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-- Exchange settings (exchange name, API credentials)
-- Trading pairs
-- Position sizing and risk parameters
-- Strategy weights for ensemble
-- Logging and monitoring settings
+## License
 
-## Trading Strategies
-
-### 1. Grid Trading Strategy
-- Dynamic grid sizing using ATR
-- Adaptive range boundaries
-- Volume and volatility filters
-
-### 2. Arbitrage Strategy
-- Cross-exchange price analysis
-- Order book depth validation
-- Fee-aware execution
-
-### 3. Sentiment Analysis Strategy
-- Multi-source sentiment analysis
-- Time decay weighting
-- Market indicator integration
-
-### 4. Order Flow Strategy
-- Order book analysis
-- Trade flow patterns
-- Volume profile analysis
-
-### 5. Market Making Strategy
-- Dynamic spread calculation
-- Inventory management
-- Order book presence
-
-## Risk Management
-
-- Position sizing based on account value
-- Maximum drawdown limits
-- Stop loss and take profit management
-- Multiple confirmation signals
-- Volume and volatility filters
-
-## Monitoring and Logging
-
-- Real-time trade logging
-- Error tracking and reporting
-- Performance metrics
-- Position monitoring
-
-## Safety Features
-
-- Testnet/paper trading support
-- Emergency stop functionality
-- Error handling and recovery
-- Rate limiting compliance
-
-## Disclaimer
-
-This bot is for educational and research purposes only. Use at your own risk. Cryptocurrency trading carries significant risks and may not be suitable for everyone. Always start with paper trading and small positions when testing new strategies.
+This project is licensed under the MIT License - see the LICENSE file for details.
+# trading-bot
