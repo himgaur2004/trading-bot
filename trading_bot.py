@@ -1,5 +1,6 @@
 import os
 import time
+import pandas as pd
 from typing import Dict, List
 from datetime import datetime
 import ccxt
@@ -231,49 +232,58 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Error updating stops: {e}")
             
+    async def run_once(self):
+        """Execute a single trading cycle."""
+        try:
+            for symbol in self.config.trading.trading_pairs:
+                # Fetch market data
+                market_data = await self.fetch_market_data(symbol)
+                if not market_data:
+                    continue
+                    
+                # Generate signals from strategies
+                signals = {}
+                for name, strategy in self.strategies.items():
+                    signal_df = strategy.generate_signals(market_data)
+                    signals[name] = {
+                        'signal': signal_df['signal'].iloc[-1],
+                        'strength': signal_df['strength'].iloc[-1]
+                    }
+                    
+                # Combine signals using strategy weights
+                combined_signal = 0
+                for name, signal in signals.items():
+                    weight = self.config.trading.strategy_weights.get(name, 0)
+                    combined_signal += signal['signal'] * signal['strength'] * weight
+                    
+                # Execute trades based on combined signal
+                if abs(combined_signal) > self.config.trading.signal_threshold:
+                    side = 'buy' if combined_signal > 0 else 'sell'
+                    size = self.calculate_position_size(symbol, side)
+                    
+                    if size > 0:
+                        await self.execute_trade(symbol, side, size)
+                        
+                # Manage existing positions
+                await self.manage_positions(symbol, market_data)
+                
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error in trading cycle: {e}")
+            return False
+
     async def run(self):
         """Main bot execution loop."""
         logger.info("Starting trading bot...")
         
         while True:
             try:
-                for symbol in self.config.trading.trading_pairs:
-                    # Fetch market data
-                    market_data = await self.fetch_market_data(symbol)
-                    if not market_data:
-                        continue
-                        
-                    # Generate signals from strategies
-                    signals = {}
-                    for name, strategy in self.strategies.items():
-                        signal_df = strategy.generate_signals(market_data)
-                        signals[name] = {
-                            'signal': signal_df['signal'].iloc[-1],
-                            'strength': signal_df['signal_strength'].iloc[-1]
-                        }
-                        
-                    # Combine signals using weights
-                    combined_signal = 0
-                    combined_strength = 0
-                    for name, signal in signals.items():
-                        weight = self.config.trading.strategy_weights[name]
-                        combined_signal += signal['signal'] * weight
-                        combined_strength += signal['strength'] * weight
-                        
-                    # Execute trades based on signals
-                    if abs(combined_signal) > 0.5:  # Threshold for trading
-                        side = 'buy' if combined_signal > 0 else 'sell'
-                        size = self.calculate_position_size(symbol, side)
-                        
-                        if size > 0:
-                            await self.execute_trade(symbol, side, size)
-                            
-                    # Manage open positions
-                    await self.manage_positions(symbol, market_data)
-                    
-                # Sleep between iterations
-                await asyncio.sleep(60)  # 1-minute intervals
-                
+                success = await self.run_once()
+                if not success:
+                    await asyncio.sleep(60)  # Sleep on error before retrying
+                else:
+                    await asyncio.sleep(self.config.trading.update_interval)
             except Exception as e:
                 logger.error(f"Error in main loop: {e}")
                 await asyncio.sleep(60)  # Sleep on error before retrying 
