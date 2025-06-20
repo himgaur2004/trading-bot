@@ -24,17 +24,20 @@ class MultiPairTradingBot:
     def fetch_all_binance_usdt_futures_pairs(self) -> list:
         """Fetch all USDT perpetual futures pairs from Binance"""
         url = "https://fapi.binance.com/fapi/v1/exchangeInfo"
-        response = requests.get(url)
-        response.raise_for_status()
-        data = response.json()
-        pairs = []
-        for symbol in data['symbols']:
-            if symbol['quoteAsset'] == 'USDT' and symbol.get('contractType') == 'PERPETUAL':
-                # Format as B-XXX_USDT for compatibility
-                base = symbol['baseAsset']
-                pairs.append(f"B-{base}_USDT")
-        print(f"Fetched {len(pairs)} USDT futures pairs from Binance.")
-        return pairs
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+            pairs = []
+            for symbol in data['symbols']:
+                if symbol['quoteAsset'] == 'USDT' and symbol.get('contractType') == 'PERPETUAL':
+                    base = symbol['baseAsset']
+                    pairs.append(f"B-{base}_USDT")
+            print(f"Fetched {len(pairs)} USDT futures pairs from Binance.")
+            return pairs
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching pairs from Binance: {e}")
+            return []
 
     def load_working_pairs(self, summary_file: str = "usdt_candles/summary.json"):
         """Load the list of working pairs from the summary file"""
