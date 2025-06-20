@@ -9,6 +9,7 @@ from backend.services.strategy_manager import StrategyManager
 from backend.database.database import DatabaseHandler
 import requests
 import time
+import json
 
 # Load environment variables
 load_dotenv()
@@ -52,6 +53,10 @@ async def main():
 
         valid_pairs = filter_pairs_with_candles(valid_pairs)
         logger.info(f"Final scan list with candle data: {valid_pairs}")
+
+        # Write the final scan list to a file for the frontend
+        with open("scanned_pairs.json", "w") as f:
+            json.dump(valid_pairs, f)
 
         # Initialize services
         market_data = MarketDataService(

@@ -1,12 +1,26 @@
+import os
+import sys
+from pathlib import Path
+import json
+
+# Add project root to Python path
+project_root = Path(__file__).parent.parent
+sys.path.append(str(project_root))
+
 import streamlit as st
-import plotly.graph_objects as go
-from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
-from pathlib import Path
-from dashboard.utils.data_handler import CoinDCXDataHandler
-from dashboard.utils.strategy_handler import StrategyHandler, StrategyType
+import plotly.graph_objects as go
+from datetime import datetime, timedelta
+
+# Local imports
+from utils.data_handler import CoinDCXDataHandler
+from utils.strategy_ai import StrategyAI, MarketCondition
+from utils.trailing import TrailingOrderManager, TrailingConfig
+from utils.config_pool import MarketConfigPool, PoolConfig
+from utils.strategy_handler import StrategyHandler, StrategyType
 from dashboard.components.strategy_viz import StrategyVisualizer
+from config import API_KEY, API_SECRET
 
 # Set page config
 st.set_page_config(
@@ -35,12 +49,59 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Add periodic refresh for real-time updates
+st_autorefresh = getattr(st, 'autorefresh', None)
+if st_autorefresh:
+    st_autorefresh(interval=5000, key="refresh")
+
+# Load scanned pairs from file
+try:
+    with open("scanned_pairs.json") as f:
+        SCANNED_PAIRS = json.load(f)
+except Exception:
+    SCANNED_PAIRS = []
+
+def initialize_api():
+    """Initialize the API connection with proper error handling."""
+    try:
+        # Create data handler instance
+        handler = CoinDCXDataHandler(API_KEY, API_SECRET)
+        
+        # Test the connection
+        handler.get_account_info()
+        
+        return handler
+    except Exception as e:
+        st.error(f"Failed to initialize API connection: {str(e)}")
+        st.error("Please check your API credentials in config.py")
+        return None
+
 # Initialize session state
 if 'strategy_handler' not in st.session_state:
     st.session_state.strategy_handler = StrategyHandler()
 
-if 'data_handler' not in st.session_state:
-    st.session_state.data_handler = None
+# Initialize or reinitialize data handler
+if 'data_handler' not in st.session_state or st.session_state.data_handler is None:
+    st.session_state.data_handler = CoinDCXDataHandler(API_KEY, API_SECRET)
+
+def show_api_status():
+    """Display API connection status."""
+    if st.session_state.data_handler is None:
+        st.error("❌ API Connection Failed")
+        st.error("Please check your API credentials in config.py")
+        
+        # Show current API key (masked)
+        masked_key = API_KEY[:4] + '*' * (len(API_KEY) - 8) + API_KEY[-4:] if API_KEY else ''
+        st.code(f"""Current API Settings:
+API Key: {masked_key}
+API Secret: {'*' * 10}
+
+To fix this:
+1. Update API credentials in config.py
+2. Ensure API key is active on CoinDCX
+3. Check API permissions""")
+        return False
+    return True
 
 def main():
     # Sidebar
@@ -65,122 +126,325 @@ def main():
 def show_dashboard():
     st.title("📊 Crypto Trading Dashboard")
     
-    # Top metrics row
-    col1, col2, col3, col4 = st.columns(4)
+    # Check API connection first
+    if not show_api_status():
+        return
     
-    with col1:
-        st.metric(
-            label="Portfolio Value",
-            value="$10,243.50",
-            delta="↑ $142.80 (1.4%)"
-        )
-    
-    with col2:
-        st.metric(
-            label="24h Trading Volume",
-            value="$5,432.20",
-            delta="↓ $230.45 (4.2%)"
-        )
-    
-    with col3:
-        st.metric(
-            label="Active Positions",
-            value="8",
-            delta="↑ 2"
-        )
-    
-    with col4:
-        st.metric(
-            label="Profit/Loss (24h)",
-            value="$142.80",
-            delta="1.4%"
-        )
+    try:
+        # Fetch real account data
+        balances = st.session_state.data_handler.get_balances()
+        market_data = st.session_state.data_handler.get_market_data()
+        
+        # Calculate portfolio metrics
+        portfolio_value = 0
+        daily_change = 0
+        
+        # Top metrics row
+        col1, col2, col3, col4 = st.columns(4)
+        
+        with col1:
+            # Calculate total portfolio value in USDT
+            for balance in balances:
+                if float(balance['balance']) > 0:
+                    currency = balance['currency']
+                    amount = float(balance['balance'])
+                    
+                    if currency == 'USDT':
+                        portfolio_value += amount
+                    else:
+                        # Find the USDT pair for this currency
+                        pair = f"{currency}USDT"
+                        price_data = market_data[market_data['pair'] == pair]
+                        if not price_data.empty:
+                            price = float(price_data.iloc[0]['last_price'])
+                            portfolio_value += amount * price
+            
+            st.metric(
+                label="Portfolio Value",
+                value=f"${portfolio_value:,.2f}",
+                delta=f"${daily_change:,.2f}" if daily_change != 0 else None
+            )
+        
+        with col2:
+            # Get 24h trading volume
+            total_volume = market_data['volume'].sum() if 'volume' in market_data.columns else 0
+            st.metric(
+                label="24h Trading Volume",
+                value=f"${total_volume:,.2f}",
+                delta=None
+            )
+        
+        with col3:
+            # Count active positions
+            active_positions = len([b for b in balances if float(b['balance']) > 0])
+            st.metric(
+                label="Active Positions",
+                value=str(active_positions),
+                delta=None
+            )
+        
+        with col4:
+            # Calculate 24h PnL
+            pnl = daily_change
+            pnl_percentage = (daily_change / portfolio_value * 100) if portfolio_value > 0 else 0
+            st.metric(
+                label="Profit/Loss (24h)",
+                value=f"${pnl:,.2f}",
+                delta=f"{pnl_percentage:.2f}%" if pnl != 0 else None
+            )
 
-    # Charts section
-    st.subheader("Portfolio Performance")
-    
-    # Sample data for the chart
-    dates = pd.date_range(start='2024-01-01', end='2024-01-14', freq='D')
-    values = np.random.normal(10000, 200, len(dates)).cumsum()
-    
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=dates,
-        y=values,
-        mode='lines',
-        name='Portfolio Value',
-        line=dict(color='#00ff00', width=2)
-    ))
-    
-    fig.update_layout(
-        template='plotly_dark',
-        title='Portfolio Value Over Time',
-        xaxis_title='Date',
-        yaxis_title='Value (USD)',
-        height=400
-    )
-    
-    st.plotly_chart(fig, use_container_width=True)
+        # Portfolio chart
+        st.subheader("Portfolio Performance")
+        
+        # Get historical candle data for BTC/USDT as market indicator
+        btc_data = st.session_state.data_handler.get_market_data("BTC-USDT")
+        if btc_data and 'candles' in btc_data and not btc_data['candles'].empty:
+            df = btc_data['candles']
+            
+            fig = go.Figure()
+            fig.add_trace(go.Candlestick(
+                x=df.index,
+                open=df['open'],
+                high=df['high'],
+                low=df['low'],
+                close=df['close'],
+                name='BTC/USDT'
+            ))
+            
+            fig.update_layout(
+                template='plotly_dark',
+                title='Market Overview (BTC/USDT)',
+                xaxis_title='Date',
+                yaxis_title='Price (USDT)',
+                height=400
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.warning("No market data available for BTC/USDT")
 
-    # Active trades
-    st.subheader("Active Trades")
-    
-    trades_data = {
-        'Pair': ['BTC/USDT', 'ETH/USDT', 'XRP/USDT', 'SOL/USDT'],
-        'Position': ['Long', 'Short', 'Long', 'Long'],
-        'Entry Price': ['$42,150', '$2,250', '$0.58', '$95.20'],
-        'Current Price': ['$42,800', '$2,200', '$0.62', '$98.50'],
-        'PnL': ['↑ 1.54%', '↑ 2.22%', '↑ 6.90%', '↑ 3.47%']
-    }
-    
-    st.dataframe(
-        pd.DataFrame(trades_data),
-        use_container_width=True,
-        hide_index=True
-    )
+        # Active trades
+        st.subheader("Active Trades")
+        
+        # Get active orders
+        active_orders = st.session_state.data_handler.get_active_orders()
+        
+        if active_orders:
+            trades_data = []
+            for order in active_orders:
+                current_price = market_data[market_data['pair'] == order['pair']]['last_price'].iloc[0]
+                pnl = ((float(current_price) - float(order['price'])) / float(order['price'])) * 100
+                
+                trades_data.append({
+                    'Pair': order['pair'],
+                    'Position': order['side'].capitalize(),
+                    'Entry Price': f"${float(order['price']):,.2f}",
+                    'Current Price': f"${float(current_price):,.2f}",
+                    'PnL': f"{'↑' if pnl >= 0 else '↓'} {abs(pnl):.2f}%"
+                })
+            
+            if trades_data:
+                st.dataframe(
+                    pd.DataFrame(trades_data),
+                    use_container_width=True,
+                    hide_index=True
+                )
+            else:
+                st.info("No active trades at the moment")
+        else:
+            st.info("No active trades at the moment")
+            
+    except Exception as e:
+        st.error(f"Error fetching data: {str(e)}")
+        st.error("Please check your API credentials and internet connection")
+        # Log the full error for debugging
+        st.exception(e)
 
 def show_portfolio():
     st.title("💼 Portfolio")
     
-    # Asset allocation chart
-    st.subheader("Asset Allocation")
-    
-    # Sample portfolio data
-    portfolio_data = {
-        'Asset': ['BTC', 'ETH', 'XRP', 'SOL', 'USDT'],
-        'Value': [5000, 3000, 1000, 800, 443.50]
-    }
-    
-    fig = go.Figure(data=[go.Pie(
-        labels=portfolio_data['Asset'],
-        values=portfolio_data['Value'],
-        hole=.3
-    )])
-    
-    fig.update_layout(
-        template='plotly_dark',
-        title='Portfolio Distribution',
-        height=400
-    )
-    
-    st.plotly_chart(fig, use_container_width=True)
+    try:
+        # Fetch real account data
+        balances = st.session_state.data_handler.get_balances()
+        market_data = st.session_state.data_handler.get_market_data()
+        
+        # Calculate portfolio composition
+        portfolio_data = {
+            'Asset': [],
+            'Value': []
+        }
+        
+        total_value = 0
+        for balance in balances:
+            if float(balance['balance']) > 0:
+                currency = balance['currency']
+                amount = float(balance['balance'])
+                
+                if currency == 'USDT':
+                    value = amount
+                else:
+                    # Find the USDT pair for this currency
+                    pair = f"{currency}USDT"
+                    price_data = market_data[market_data['pair'] == pair]
+                    if not price_data.empty:
+                        price = float(price_data.iloc[0]['last_price'])
+                        value = amount * price
+                    else:
+                        continue
+                
+                portfolio_data['Asset'].append(currency)
+                portfolio_data['Value'].append(value)
+                total_value += value
+        
+        if portfolio_data['Asset']:
+            st.subheader("Asset Allocation")
+            
+            fig = go.Figure(data=[go.Pie(
+                labels=portfolio_data['Asset'],
+                values=portfolio_data['Value'],
+                hole=.3,
+                hovertemplate="<b>%{label}</b><br>" +
+                            "Value: $%{value:,.2f}<br>" +
+                            "Percentage: %{percent:.1%}<extra></extra>"
+            )])
+            
+            fig.update_layout(
+                template='plotly_dark',
+                title=f'Total Portfolio Value: ${total_value:,.2f}',
+                height=400
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Display detailed balance table
+            st.subheader("Asset Details")
+            details_data = []
+            for asset, value in zip(portfolio_data['Asset'], portfolio_data['Value']):
+                balance_info = next(b for b in balances if b['currency'] == asset)
+                details_data.append({
+                    'Asset': asset,
+                    'Balance': float(balance_info['balance']),
+                    'Value (USDT)': value,
+                    'Allocation': f"{(value/total_value*100):.2f}%"
+                })
+            
+            st.dataframe(
+                pd.DataFrame(details_data),
+                use_container_width=True,
+                hide_index=True
+            )
+        else:
+            st.info("No assets found in your portfolio")
+            
+    except Exception as e:
+        st.error(f"Error fetching portfolio data: {str(e)}")
+        st.error("Please check your API credentials and internet connection")
 
 def show_strategies():
     st.title("🎯 Trading Strategies")
     
-    # Initialize strategy visualizer
+    # Initialize components
     strategy_viz = StrategyVisualizer(st.session_state.strategy_handler)
     
-    # Strategy selector
-    selected_strategy = strategy_viz.show_strategy_selector()
+    # Add AI Strategy Selection
+    st.subheader("AI Strategy Selection")
     
-    # Get strategy parameters
+    if 'strategy_ai' not in st.session_state:
+        st.session_state.strategy_ai = StrategyAI()
+        
+    # Market condition analysis
+    if st.button("Analyze Market Condition"):
+        try:
+            # Get market data
+            data = st.session_state.data_handler.get_market_data("BTC-USDT")
+            
+            # Analyze market condition
+            condition = st.session_state.strategy_ai.analyze_market_condition(data)
+            st.info(f"Current Market Condition: {condition.value}")
+            
+            # Get suitable strategy
+            strategy = st.session_state.strategy_ai.select_best_strategy(data)
+            if strategy:
+                st.success(f"Selected Strategy: {st.session_state.strategy_ai.get_current_strategy()}")
+            else:
+                st.warning("No suitable strategy found for current conditions")
+                
+        except Exception as e:
+            st.error(f"Error analyzing market: {str(e)}")
+            
+    # Trailing Settings
+    st.subheader("Trailing Settings")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        activation_pct = st.number_input(
+            "Activation Percentage",
+            min_value=0.0,
+            max_value=100.0,
+            value=1.0,
+            step=0.1,
+            help="Percentage from entry to activate trailing"
+        )
+        
+        callback_rate = st.number_input(
+            "Callback Rate",
+            min_value=0.0,
+            max_value=100.0,
+            value=0.5,
+            step=0.1,
+            help="How far price can move against position before triggering"
+        )
+        
+    with col2:
+        step_size = st.number_input(
+            "Step Size",
+            min_value=0.00001,
+            max_value=1.0,
+            value=0.001,
+            format="%.5f",
+            help="Minimum price movement increment"
+        )
+        
+        arm_price = st.number_input(
+            "Arm Price (Optional)",
+            min_value=0.0,
+            value=0.0,
+            help="Price at which trailing becomes active (0 for automatic)"
+        )
+        
+    # Config Pools
+    st.subheader("Config Pools")
+    
+    if 'config_pool' not in st.session_state:
+        st.session_state.config_pool = MarketConfigPool(st.session_state.strategy_handler.get_base_config())
+        
+    market_condition = st.selectbox(
+        "Select Market Condition",
+        ["trending", "ranging", "volatile"]
+    )
+    
+    if st.button("Apply Config Pool"):
+        try:
+            config = st.session_state.config_pool.get_config(market_condition)
+            st.session_state.strategy_handler.update_config(config)
+            st.success(f"Applied {market_condition} market configuration")
+        except Exception as e:
+            st.error(f"Error applying config: {str(e)}")
+            
+    # Show current config
+    if st.checkbox("Show Current Configuration"):
+        config = st.session_state.strategy_handler.get_current_config()
+        st.json(config)
+        
+    # Original strategy selector
+    selected_strategy = strategy_viz.show_strategy_selector()
     parameters = strategy_viz.show_strategy_parameters(selected_strategy)
     
-    # Trading pair selector
+    # Trading pair selector with updated format for CoinDCX
     pair = st.selectbox(
         "Select Trading Pair",
-        ["BTC/USDT", "ETH/USDT", "XRP/USDT", "SOL/USDT"]
+        ["BTC-USDT", "ETH-USDT", "XRP-USDT", "SOL-USDT"]
     )
     
     # Timeframe selector
@@ -189,34 +453,27 @@ def show_strategies():
         ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]
     )
     
-    # Fetch data button
+    # Run strategy button
     if st.button("Run Strategy Backtest"):
         with st.spinner("Fetching data and running backtest..."):
             try:
-                # Initialize data handler if not already done
-                if not st.session_state.data_handler:
-                    api_key = st.secrets["COINDCX_API_KEY"]
-                    api_secret = st.secrets["COINDCX_API_SECRET"]
-                    st.session_state.data_handler = CoinDCXDataHandler(api_key, api_secret)
-                
                 # Fetch historical data
                 data = st.session_state.data_handler.get_candles(pair, timeframe)
                 
-                # Add strategy to handler
+                # Add strategy
                 strategy_name = f"{selected_strategy}_{pair}_{timeframe}"
                 st.session_state.strategy_handler.add_strategy(
                     strategy_name,
-                    StrategyType(selected_strategy),
                     parameters
                 )
                 
-                # Get signals and performance metrics
-                signals = st.session_state.strategy_handler.get_strategy_signals(strategy_name, data)
-                metrics = st.session_state.strategy_handler.get_strategy_performance(strategy_name, signals)
+                # Get signals and performance
+                signals = st.session_state.strategy_handler.get_signals(data)
+                metrics = st.session_state.strategy_handler.get_performance(signals)
                 
                 # Display results
-                strategy_viz.plot_strategy_results(data, signals)
-                strategy_viz.show_performance_metrics(metrics)
+                strategy_viz.plot_results(data, signals)
+                strategy_viz.show_metrics(metrics)
                 strategy_viz.plot_equity_curve(signals)
                 strategy_viz.show_trade_list(signals)
                 
@@ -263,8 +520,35 @@ def show_settings():
     # API Configuration
     st.subheader("API Configuration")
     
-    api_key = st.text_input("API Key", type="password")
-    api_secret = st.text_input("API Secret", type="password")
+    # Show current API key (masked)
+    current_key = st.session_state.get('api_key', '')
+    masked_key = current_key[:4] + '*' * (len(current_key) - 8) + current_key[-4:] if current_key else ''
+    st.text(f"Current API Key: {masked_key}")
+    
+    # Input fields for new credentials
+    new_api_key = st.text_input("New API Key", type="password")
+    new_api_secret = st.text_input("New API Secret", type="password")
+    
+    if st.button("Update API Credentials"):
+        if new_api_key and new_api_secret:
+            try:
+                # Test new credentials
+                test_handler = CoinDCXDataHandler(new_api_key, new_api_secret)
+                test_handler.get_account_info()  # Test the connection
+                
+                # Update session state
+                st.session_state.api_key = new_api_key
+                st.session_state.api_secret = new_api_secret
+                
+                # Reinitialize data handler with new credentials
+                st.session_state.data_handler = test_handler
+                
+                st.success("API credentials updated successfully!")
+                st.rerun()  # Rerun the app to refresh all components
+            except Exception as e:
+                st.error(f"Failed to validate new credentials: {str(e)}")
+        else:
+            st.warning("Please provide both API Key and Secret")
     
     # Risk Management
     st.subheader("Risk Management")
@@ -272,21 +556,32 @@ def show_settings():
     col1, col2 = st.columns(2)
     
     with col1:
-        st.number_input("Max Position Size (%)", value=5.0)
-        st.number_input("Stop Loss (%)", value=2.0)
+        max_position = st.number_input("Max Position Size (%)", 
+                                     value=st.session_state.get('max_position', 5.0),
+                                     min_value=0.1,
+                                     max_value=100.0)
+        stop_loss = st.number_input("Stop Loss (%)", 
+                                   value=st.session_state.get('stop_loss', 2.0),
+                                   min_value=0.1,
+                                   max_value=100.0)
     
     with col2:
-        st.number_input("Take Profit (%)", value=6.0)
-        st.number_input("Max Daily Loss (%)", value=10.0)
+        take_profit = st.number_input("Take Profit (%)", 
+                                     value=st.session_state.get('take_profit', 6.0),
+                                     min_value=0.1,
+                                     max_value=100.0)
+        max_daily_loss = st.number_input("Max Daily Loss (%)", 
+                                        value=st.session_state.get('max_daily_loss', 10.0),
+                                        min_value=0.1,
+                                        max_value=100.0)
     
-    # Save settings button
-    if st.button("Save Settings"):
-        if api_key and api_secret:
-            # Initialize data handler with new credentials
-            st.session_state.data_handler = CoinDCXDataHandler(api_key, api_secret)
-            st.success("Settings saved successfully!")
-        else:
-            st.error("Please provide both API Key and Secret")
+    if st.button("Save Risk Settings"):
+        # Save risk management settings to session state
+        st.session_state.max_position = max_position
+        st.session_state.stop_loss = stop_loss
+        st.session_state.take_profit = take_profit
+        st.session_state.max_daily_loss = max_daily_loss
+        st.success("Risk management settings saved successfully!")
 
 if __name__ == "__main__":
     main() 
