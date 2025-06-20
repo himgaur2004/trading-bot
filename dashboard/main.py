@@ -482,37 +482,128 @@ def show_strategies():
 
 def show_market_analysis():
     st.title("📊 Market Analysis")
-    
+
     # Market overview
     st.subheader("Market Overview")
-    
-    # Sample market data
-    market_data = {
-        'Pair': ['BTC/USDT', 'ETH/USDT', 'XRP/USDT', 'SOL/USDT'],
-        'Price': ['$42,800', '$2,200', '$0.62', '$98.50'],
-        'Change 24h': ['↑ 1.54%', '↓ 0.22%', '↑ 3.90%', '↑ 2.47%'],
-        'Volume 24h': ['$28.5B', '$12.2B', '$2.1B', '$1.8B']
-    }
-    
+
+    # Fetch all market data
+    try:
+        market_data = st.session_state.data_handler.get_market_data()
+        if market_data is None or market_data.empty:
+            st.warning("No market data available.")
+            return
+    except Exception as e:
+        st.error(f"Error fetching market data: {str(e)}")
+        return
+
+    # Show top 10 pairs by volume
+    if 'volume' in market_data.columns:
+        top_pairs = market_data.sort_values('volume', ascending=False).head(10)
+    else:
+        top_pairs = market_data.head(10)
     st.dataframe(
-        pd.DataFrame(market_data),
+        top_pairs[[c for c in ['pair', 'last_price', 'change_24_hour', 'volume'] if c in top_pairs.columns]],
         use_container_width=True,
         hide_index=True
     )
-    
-    # Technical indicators
-    st.subheader("Technical Indicators")
-    
-    indicators_col1, indicators_col2, indicators_col3 = st.columns(3)
-    
-    with indicators_col1:
-        st.metric("RSI (14)", "58", "Neutral")
-    
-    with indicators_col2:
-        st.metric("MACD", "Bullish", "↑")
-    
-    with indicators_col3:
-        st.metric("MA Cross", "Golden Cross", "↑")
+
+    # Candlestick chart and technical indicators
+    st.subheader("Candlestick & Technical Indicators")
+    pair_list = market_data['pair'].tolist() if 'pair' in market_data.columns else []
+    default_pair = 'BTC-USDT' if 'BTC-USDT' in pair_list else (pair_list[0] if pair_list else None)
+
+    # Filter pairs to only those with candle data available
+    available_pairs = []
+    for pair in pair_list:
+        try:
+            pair_data = st.session_state.data_handler.get_market_data(pair)
+            df = pair_data['candles'] if pair_data and 'candles' in pair_data else None
+            if df is not None and not df.empty:
+                available_pairs.append(pair)
+        except Exception:
+            continue
+    if not available_pairs:
+        st.warning("No pairs with candle data available.")
+        return
+    if default_pair not in available_pairs:
+        default_pair = available_pairs[0]
+    pair = st.selectbox("Select Pair for Analysis", available_pairs, index=available_pairs.index(default_pair) if default_pair in available_pairs else 0)
+
+    # Fetch candle data for selected pair
+    with st.spinner(f"Loading data for {pair}..."):
+        try:
+            pair_data = st.session_state.data_handler.get_market_data(pair)
+            df = pair_data['candles'] if pair_data and 'candles' in pair_data else None
+        except Exception as e:
+            st.error(f"Error fetching candle data: {str(e)}")
+            df = None
+
+    if df is not None and not df.empty:
+        # Candlestick chart
+        fig = go.Figure()
+        fig.add_trace(go.Candlestick(
+            x=df.index,
+            open=df['open'],
+            high=df['high'],
+            low=df['low'],
+            close=df['close'],
+            name=pair
+        ))
+        fig.update_layout(
+            template='plotly_dark',
+            title=f'Market Overview ({pair})',
+            xaxis_title='Date',
+            yaxis_title='Price (USDT)',
+            height=400
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Technical indicators
+        st.subheader("Technical Indicators")
+        indicators_col1, indicators_col2, indicators_col3 = st.columns(3)
+        # Calculate RSI
+        try:
+            delta = df['close'].diff()
+            gain = delta.where(delta > 0, 0).rolling(window=14).mean()
+            loss = -delta.where(delta < 0, 0).rolling(window=14).mean()
+            rs = gain / loss
+            rsi = 100 - (100 / (1 + rs))
+            rsi_val = rsi.iloc[-1] if not rsi.isna().all() else None
+        except Exception:
+            rsi_val = None
+        # Calculate MACD
+        try:
+            exp1 = df['close'].ewm(span=12, adjust=False).mean()
+            exp2 = df['close'].ewm(span=26, adjust=False).mean()
+            macd = exp1 - exp2
+            signal = macd.ewm(span=9, adjust=False).mean()
+            macd_val = macd.iloc[-1] if not macd.isna().all() else None
+            signal_val = signal.iloc[-1] if not signal.isna().all() else None
+        except Exception:
+            macd_val = None
+            signal_val = None
+        # Calculate MA Cross
+        try:
+            ma_fast = df['close'].rolling(window=50).mean()
+            ma_slow = df['close'].rolling(window=200).mean()
+            if not ma_fast.isna().all() and not ma_slow.isna().all():
+                if ma_fast.iloc[-1] > ma_slow.iloc[-1]:
+                    ma_cross = "Golden Cross"
+                else:
+                    ma_cross = "Death Cross"
+            else:
+                ma_cross = "N/A"
+        except Exception:
+            ma_cross = "N/A"
+        with indicators_col1:
+            st.metric("RSI (14)", f"{rsi_val:.2f}" if rsi_val is not None else "N/A")
+        with indicators_col2:
+            macd_str = f"MACD: {macd_val:.2f}, Signal: {signal_val:.2f}" if macd_val is not None and signal_val is not None else "N/A"
+            st.metric("MACD", macd_str)
+        with indicators_col3:
+            st.metric("MA Cross", ma_cross)
+    else:
+        st.warning(f"No candle data available for {pair}")
 
 def show_settings():
     st.title("⚙️ Settings")
