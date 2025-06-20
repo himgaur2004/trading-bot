@@ -417,8 +417,8 @@ def show_strategies():
     st.subheader("Config Pools")
     
     if 'config_pool' not in st.session_state:
-        st.session_state.config_pool = MarketConfigPool(st.session_state.strategy_handler.get_base_config())
-        
+        st.session_state.config_pool = MarketConfigPool({})  # Use empty dict or default config
+    
     market_condition = st.selectbox(
         "Select Market Condition",
         ["trending", "ranging", "volatile"]

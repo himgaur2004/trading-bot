@@ -90,9 +90,11 @@ async def main():
                         valid_signals = risk_manager.validate_signals(signals)
                         
                         for signal in valid_signals:
-                            # Instead of executing trades, just log the trade name/strategy
                             trade_name = signal.get('strategy', signal.get('type', 'Unknown'))
-                            logger.info(f"Trade signal found for {symbol} by strategy: {trade_name}")
+                            sl = signal.get('stop_loss', 'N/A')
+                            tp = signal.get('take_profit', 'N/A')
+                            lev = signal.get('leverage', 'N/A')
+                            logger.info(f"[SCAN] {symbol} | Strategy: {trade_name} | Signal: {signal.get('signal')} | SL: {sl} | TP: {tp} | Leverage: {lev}")
                             logger.info(f"Signal details: {signal}")
                         # No trade execution here
                 except Exception as e:
