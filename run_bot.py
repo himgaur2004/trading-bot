@@ -7,6 +7,8 @@ from backend.services.trade_executor import TradeExecutor
 from backend.services.risk_manager import RiskManager
 from backend.services.strategy_manager import StrategyManager
 from backend.database.database import DatabaseHandler
+import requests
+import time
 
 # Load environment variables
 load_dotenv()
@@ -20,11 +22,42 @@ async def main():
     try:
         logger.info("Initializing trading bot...")
         
+        # Fetch all available trading pairs from CoinDCX
+        markets_response = requests.get("https://api.coindcx.com/exchange/v1/markets")
+        markets = set(markets_response.json())
+
+        # Fetch all pairs with active ticker data
+        tickers_response = requests.get("https://api.coindcx.com/exchange/ticker")
+        tickers = tickers_response.json()
+        active_pairs = set(t['market'] for t in tickers if t['market'].endswith('USDT'))
+
+        # Use only pairs that are both listed and have active ticker data
+        valid_pairs = list(markets & active_pairs)
+        logger.info(f"Scanning {len(valid_pairs)} valid pairs with active ticker data: {valid_pairs}")
+
+        # Pre-scan: filter for pairs with available candle data
+        def filter_pairs_with_candles(pairs):
+            valid = []
+            for symbol in pairs:
+                url = f"https://public.coindcx.com/market_data/candles?pair={symbol}&interval=1m&limit=1"
+                resp = requests.get(url)
+                try:
+                    data = resp.json()
+                    if isinstance(data, list) and len(data) > 0:
+                        valid.append(symbol)
+                except Exception:
+                    pass
+                time.sleep(0.1)  # To avoid rate limits
+            return valid
+
+        valid_pairs = filter_pairs_with_candles(valid_pairs)
+        logger.info(f"Final scan list with candle data: {valid_pairs}")
+
         # Initialize services
         market_data = MarketDataService(
             api_key=API_KEY,
             api_secret=API_SECRET,
-            symbols=TRADING_PAIRS  # Empty list will trigger fetching all futures pairs
+            symbols=valid_pairs  # Use only valid pairs
         )
         
         trade_executor = TradeExecutor(
@@ -52,23 +85,11 @@ async def main():
                         valid_signals = risk_manager.validate_signals(signals)
                         
                         for signal in valid_signals:
-                            # Execute trades
-                            if signal.get('type') == 'limit':
-                                await trade_executor.place_order(
-                                    symbol=signal['symbol'],
-                                    side=signal['side'],
-                                    order_type='limit',
-                                    quantity=signal['quantity'],
-                                    price=signal['price']
-                                )
-                            else:
-                                await trade_executor.place_order(
-                                    symbol=signal['symbol'],
-                                    side=signal['side'],
-                                    order_type='market',
-                                    quantity=signal['quantity']
-                                )
-                                
+                            # Instead of executing trades, just log the trade name/strategy
+                            trade_name = signal.get('strategy', signal.get('type', 'Unknown'))
+                            logger.info(f"Trade signal found for {symbol} by strategy: {trade_name}")
+                            logger.info(f"Signal details: {signal}")
+                        # No trade execution here
                 except Exception as e:
                     logger.error(f"Error processing market data: {e}")
                     
