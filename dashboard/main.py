@@ -66,24 +66,35 @@ bot = st.session_state.binance_bot
 # Main dashboard
 st.title("📊 Binance Trading Dashboard")
 
+# Debug: Show loaded pairs
+st.write("Loaded pairs:", bot.working_pairs[:5])
+
+if not bot.working_pairs:
+    st.error("No Binance pairs loaded. Check your API/network.")
+
+# Use st_autorefresh for auto mode
+if auto_mode:
+    st_autorefresh = getattr(st, 'autorefresh', None)
+    if st_autorefresh:
+        st_autorefresh(interval=scan_interval * 1000, key="refresh")
+
 # Scan and get opportunities
 def get_opportunities():
-    bot.candle_data = bot.fetch_all_binance_candles(bot.working_pairs[:50], interval='15m', limit=100)
-    analyses = bot.analyze_all_pairs(bot.candle_data)
-    opportunities = bot.filter_trading_opportunities(analyses)
-    # Only bullish/bearish
-    filtered = [opp for opp in opportunities if opp.get('direction') in ['bullish', 'bearish']]
-    # Add star for best
-    if filtered:
-        best = max(filtered, key=lambda x: x.get('signal_count', 0))
-        for opp in filtered:
-            opp['star'] = (opp is best)
-    return filtered
-
-# Auto-refresh logic
-if auto_mode:
-    st.experimental_rerun()
-    time.sleep(scan_interval)
+    try:
+        bot.candle_data = bot.fetch_all_binance_candles(bot.working_pairs[:50], interval='15m', limit=100)
+        analyses = bot.analyze_all_pairs(bot.candle_data)
+        opportunities = bot.filter_trading_opportunities(analyses)
+        # Only bullish/bearish
+        filtered = [opp for opp in opportunities if opp.get('direction') in ['bullish', 'bearish']]
+        # Add star for best
+        if filtered:
+            best = max(filtered, key=lambda x: x.get('signal_count', 0))
+            for opp in filtered:
+                opp['star'] = (opp is best)
+        return filtered
+    except Exception as e:
+        st.error(f"Error fetching opportunities: {e}")
+        return []
 
 # Get and display opportunities
 data = get_opportunities()
