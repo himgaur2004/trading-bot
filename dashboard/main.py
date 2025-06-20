@@ -2,6 +2,7 @@ import os
 import sys
 from pathlib import Path
 import json
+import time
 
 # Add project root to Python path
 project_root = Path(__file__).parent.parent
@@ -21,68 +22,129 @@ from utils.config_pool import MarketConfigPool, PoolConfig
 from utils.strategy_handler import StrategyHandler, StrategyType
 from dashboard.components.strategy_viz import StrategyVisualizer
 from config import API_KEY, API_SECRET
+from multi_pair_trading import MultiPairTradingBot
 
 # Set page config
 st.set_page_config(
-    page_title="CryptoTrading Dashboard",
+    page_title="Binance Trading Dashboard",
     page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
+# Custom CSS for modern dark look
 st.markdown("""
     <style>
-    .main {
-        background-color: #0e1117;
-    }
-    .stTabs > div > div > div > div {
-        background-color: #262730;
-        padding: 10px;
-        border-radius: 5px;
-    }
-    .stMetric {
-        background-color: #1f2937;
-        padding: 15px;
-        border-radius: 5px;
-    }
+    .main { background-color: #0e1117; }
+    .stDataFrame { background-color: #181c24; }
+    .bullish { color: #00ff99 !important; font-weight: bold; }
+    .bearish { color: #ff4b4b !important; font-weight: bold; }
+    .star { color: gold; font-size: 1.2em; }
+    .status-on { color: #00ff99; font-weight: bold; }
+    .status-off { color: #ff4b4b; font-weight: bold; }
     </style>
 """, unsafe_allow_html=True)
 
-# Add periodic refresh for real-time updates
-st_autorefresh = getattr(st, 'autorefresh', None)
-if st_autorefresh:
-    st_autorefresh(interval=5000, key="refresh")
+# Sidebar controls
+st.sidebar.title("⚙️ Controls")
+auto_mode = st.sidebar.toggle("Auto Trading Mode", value=False)
+scan_interval = st.sidebar.slider("Scan Interval (sec)", 10, 300, 60, 10)
 
-# Load scanned pairs from file
-try:
-    with open("scanned_pairs.json") as f:
-        SCANNED_PAIRS = json.load(f)
-except Exception:
-    SCANNED_PAIRS = []
+# Status indicator
+if auto_mode:
+    st.sidebar.markdown('<span class="status-on">🟢 Auto Mode ON</span>', unsafe_allow_html=True)
+else:
+    st.sidebar.markdown('<span class="status-off">🔴 Auto Mode OFF</span>', unsafe_allow_html=True)
 
-def initialize_api():
-    """Initialize the API connection with proper error handling."""
-    try:
-        # Create data handler instance
-        handler = CoinDCXDataHandler(API_KEY, API_SECRET)
-        
-        # Test the connection
-        handler.get_account_info()
-        
-        return handler
-    except Exception as e:
-        st.error(f"Failed to initialize API connection: {str(e)}")
-        st.error("Please check your API credentials in config.py")
-        return None
+# Initialize bot
+if 'binance_bot' not in st.session_state:
+    st.session_state.binance_bot = MultiPairTradingBot()
+    st.session_state.binance_bot.load_working_pairs()
 
-# Initialize session state
-if 'strategy_handler' not in st.session_state:
-    st.session_state.strategy_handler = StrategyHandler()
+bot = st.session_state.binance_bot
 
-# Initialize or reinitialize data handler
-if 'data_handler' not in st.session_state or st.session_state.data_handler is None:
-    st.session_state.data_handler = CoinDCXDataHandler(API_KEY, API_SECRET)
+# Main dashboard
+st.title("📊 Binance Trading Dashboard")
+
+# Scan and get opportunities
+def get_opportunities():
+    bot.candle_data = bot.fetch_all_binance_candles(bot.working_pairs[:50], interval='15m', limit=100)
+    analyses = bot.analyze_all_pairs(bot.candle_data)
+    opportunities = bot.filter_trading_opportunities(analyses)
+    # Only bullish/bearish
+    filtered = [opp for opp in opportunities if opp.get('direction') in ['bullish', 'bearish']]
+    # Add star for best
+    if filtered:
+        best = max(filtered, key=lambda x: x.get('signal_count', 0))
+        for opp in filtered:
+            opp['star'] = (opp is best)
+    return filtered
+
+# Auto-refresh logic
+if auto_mode:
+    st.experimental_rerun()
+    time.sleep(scan_interval)
+
+# Get and display opportunities
+data = get_opportunities()
+
+# DataFrame for table
+if data:
+    df = pd.DataFrame([
+        {
+            '★': '★' if opp.get('star') else '',
+            'Pair': opp['pair'],
+            'Price': opp['current_price'],
+            'Direction': '↑ Bullish' if opp['direction']=='bullish' else '↓ Bearish',
+            'Best Strategy': opp.get('best_strategy','-'),
+            'SL': opp.get('sl','-'),
+            'TP': opp.get('tp','-'),
+            'Lev': opp.get('lev','-'),
+            'Signals': ', '.join(opp['signals'].keys()) if opp['signals'] else '-',
+            'RSI': opp['indicators']['rsi'],
+            'MACD': opp['indicators']['macd'],
+        } for opp in data
+    ])
+    # Color and icon formatting
+    def highlight_direction(val):
+        if 'Bullish' in val:
+            return 'bullish'
+        elif 'Bearish' in val:
+            return 'bearish'
+        return ''
+    st.dataframe(df.style.applymap(highlight_direction, subset=['Direction']), use_container_width=True, hide_index=True)
+    # Click to expand chart
+    st.subheader("🔎 Click a pair for details and chart:")
+    selected = st.selectbox("Select Pair", df['Pair'])
+    opp = next((o for o in data if o['pair']==selected), None)
+    if opp:
+        st.markdown(f"### {opp['pair']} {'★' if opp.get('star') else ''}")
+        st.write(f"**Direction:** {'↑ Bullish' if opp['direction']=='bullish' else '↓ Bearish'}  ")
+        st.write(f"**Best Strategy:** {opp.get('best_strategy','-')}  ")
+        st.write(f"**SL:** {opp.get('sl','-')}  |  **TP:** {opp.get('tp','-')}  |  **Leverage:** {opp.get('lev','-')}")
+        st.write(f"**Signals:** {', '.join(opp['signals'].keys()) if opp['signals'] else '-'}")
+        # Chart
+        df_chart = bot.candle_data[selected]
+        fig = go.Figure()
+        fig.add_trace(go.Candlestick(
+            x=df_chart.index,
+            open=df_chart['open'],
+            high=df_chart['high'],
+            low=df_chart['low'],
+            close=df_chart['close'],
+            name='Price'))
+        # SL/TP lines
+        fig.add_hline(y=opp.get('sl'), line_dash="dash", line_color="#ff4b4b", annotation_text="SL", annotation_position="bottom right")
+        fig.add_hline(y=opp.get('tp'), line_dash="dash", line_color="#00ff99", annotation_text="TP", annotation_position="top right")
+        fig.update_layout(template='plotly_dark', height=500)
+        st.plotly_chart(fig, use_container_width=True)
+else:
+    st.info("No actionable trading opportunities found.")
+
+# Performance metrics (mock)
+st.subheader("Performance Metrics (Mock)")
+st.metric("Total Trades", value=len(data) if data else 0)
+st.metric("Best Win Rate", value=f"{max([1 for d in data if d.get('star')], default=0)*100:.1f}%" if data else "0%")
 
 def show_api_status():
     """Display API connection status."""
@@ -124,141 +186,15 @@ def main():
         show_settings()
 
 def show_dashboard():
-    st.title("📊 Crypto Trading Dashboard")
-    
-    # Check API connection first
-    if not show_api_status():
-        return
-    
+    st.title("📊 Crypto Trading Dashboard (Binance)")
+    # Use Binance data only
     try:
-        # Fetch real account data
-        balances = st.session_state.data_handler.get_balances()
-        market_data = st.session_state.data_handler.get_market_data()
-        
-        # Calculate portfolio metrics
-        portfolio_value = 0
-        daily_change = 0
-        
-        # Top metrics row
-        col1, col2, col3, col4 = st.columns(4)
-        
-        with col1:
-            # Calculate total portfolio value in USDT
-            for balance in balances:
-                if float(balance['balance']) > 0:
-                    currency = balance['currency']
-                    amount = float(balance['balance'])
-                    
-                    if currency == 'USDT':
-                        portfolio_value += amount
-                    else:
-                        # Find the USDT pair for this currency
-                        pair = f"{currency}USDT"
-                        price_data = market_data[market_data['pair'] == pair]
-                        if not price_data.empty:
-                            price = float(price_data.iloc[0]['last_price'])
-                            portfolio_value += amount * price
-            
-            st.metric(
-                label="Portfolio Value",
-                value=f"${portfolio_value:,.2f}",
-                delta=f"${daily_change:,.2f}" if daily_change != 0 else None
-            )
-        
-        with col2:
-            # Get 24h trading volume
-            total_volume = market_data['volume'].sum() if 'volume' in market_data.columns else 0
-            st.metric(
-                label="24h Trading Volume",
-                value=f"${total_volume:,.2f}",
-                delta=None
-            )
-        
-        with col3:
-            # Count active positions
-            active_positions = len([b for b in balances if float(b['balance']) > 0])
-            st.metric(
-                label="Active Positions",
-                value=str(active_positions),
-                delta=None
-            )
-        
-        with col4:
-            # Calculate 24h PnL
-            pnl = daily_change
-            pnl_percentage = (daily_change / portfolio_value * 100) if portfolio_value > 0 else 0
-            st.metric(
-                label="Profit/Loss (24h)",
-                value=f"${pnl:,.2f}",
-                delta=f"{pnl_percentage:.2f}%" if pnl != 0 else None
-            )
-
-        # Portfolio chart
-        st.subheader("Portfolio Performance")
-        
-        # Get historical candle data for BTC/USDT as market indicator
-        btc_data = st.session_state.data_handler.get_market_data("BTC-USDT")
-        if btc_data and 'candles' in btc_data and not btc_data['candles'].empty:
-            df = btc_data['candles']
-            
-            fig = go.Figure()
-            fig.add_trace(go.Candlestick(
-                x=df.index,
-                open=df['open'],
-                high=df['high'],
-                low=df['low'],
-                close=df['close'],
-                name='BTC/USDT'
-            ))
-            
-            fig.update_layout(
-                template='plotly_dark',
-                title='Market Overview (BTC/USDT)',
-                xaxis_title='Date',
-                yaxis_title='Price (USDT)',
-                height=400
-            )
-            
-            st.plotly_chart(fig, use_container_width=True)
-        else:
-            st.warning("No market data available for BTC/USDT")
-
-        # Active trades
-        st.subheader("Active Trades")
-        
-        # Get active orders
-        active_orders = st.session_state.data_handler.get_active_orders()
-        
-        if active_orders:
-            trades_data = []
-            for order in active_orders:
-                current_price = market_data[market_data['pair'] == order['pair']]['last_price'].iloc[0]
-                pnl = ((float(current_price) - float(order['price'])) / float(order['price'])) * 100
-                
-                trades_data.append({
-                    'Pair': order['pair'],
-                    'Position': order['side'].capitalize(),
-                    'Entry Price': f"${float(order['price']):,.2f}",
-                    'Current Price': f"${float(current_price):,.2f}",
-                    'PnL': f"{'↑' if pnl >= 0 else '↓'} {abs(pnl):.2f}%"
-                })
-            
-            if trades_data:
-                st.dataframe(
-                    pd.DataFrame(trades_data),
-                    use_container_width=True,
-                    hide_index=True
-                )
-            else:
-                st.info("No active trades at the moment")
-        else:
-            st.info("No active trades at the moment")
-            
+        # Show top trading opportunities
+        analyses = bot.analyze_all_pairs(bot.candle_data)
+        opportunities = bot.filter_trading_opportunities(analyses)
+        bot.print_trading_opportunities(opportunities, limit=10)
     except Exception as e:
-        st.error(f"Error fetching data: {str(e)}")
-        st.error("Please check your API credentials and internet connection")
-        # Log the full error for debugging
-        st.exception(e)
+        st.error(f"Error loading Binance data: {e}")
 
 def show_portfolio():
     st.title("💼 Portfolio")
@@ -458,7 +394,11 @@ def show_strategies():
         with st.spinner("Fetching data and running backtest..."):
             try:
                 # Fetch historical data
-                data = st.session_state.data_handler.get_candles(pair, timeframe)
+                data = st.session_state.data_handler.get_market_data(pair)
+                if data and 'candles' in data:
+                    data = data['candles']
+                else:
+                    data = None
                 
                 # Add strategy
                 strategy_name = f"{selected_strategy}_{pair}_{timeframe}"

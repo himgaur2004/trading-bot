@@ -1,13 +1,18 @@
+import os
 from typing import Dict, Any
 from dataclasses import dataclass
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 @dataclass
 class ExchangeConfig:
     """Exchange configuration settings"""
-    name: str = "binance"
-    testnet: bool = True  # Use testnet by default for safety
-    api_key: str = ""  # Will be loaded from environment variables
-    api_secret: str = ""  # Will be loaded from environment variables
+    name: str = "coindcx"
+    testnet: bool = False  # CoinDCX doesn't have a testnet
+    api_key: str = os.getenv("COINDCX_API_KEY", "")
+    api_secret: str = os.getenv("COINDCX_API_SECRET", "")
     
 @dataclass
 class TradingConfig:
@@ -28,7 +33,7 @@ class TradingConfig:
     
     def __post_init__(self):
         if self.trading_pairs is None:
-            self.trading_pairs = ["BTC/USDT", "ETH/USDT"]
+            self.trading_pairs = ["BTCUSDT", "ETHUSDT"]
         if self.strategy_weights is None:
             self.strategy_weights = {
                 "grid_trading": 0.2,
@@ -141,4 +146,20 @@ NOTIFICATION_EVENTS = [
     'take_profit_hit',
     'error_occurred',
     'daily_summary'
-] 
+]
+
+"""
+Configuration settings for the CoinDCX Trading Bot
+"""
+
+# CoinDCX API Credentials
+API_KEY = "ea2224143d465699a2269a98a7a5cd0961252b4705e87973"
+API_SECRET = "e3646cd3e8a59d94d41bedcbd95b20ad6cf2b4fcbe62031fe30927d258e836f0"
+
+# Trading Settings
+DEFAULT_TRADING_PAIR = "BTCUSDT"
+DEFAULT_TIMEFRAME = "1h"
+MAX_POSITION_SIZE = 0.1  # 10% of portfolio
+STOP_LOSS_PERCENTAGE = 0.02  # 2%
+TAKE_PROFIT_PERCENTAGE = 0.03  # 3%
+MAX_OPEN_TRADES = 5 

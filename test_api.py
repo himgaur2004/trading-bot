@@ -8,6 +8,9 @@ import os
 from dotenv import load_dotenv
 from loguru import logger
 from typing import Dict, List, Optional
+import requests
+from datetime import datetime
+from dashboard.utils.data_handler import CoinDCXDataHandler
 
 # Load environment variables
 load_dotenv()
@@ -231,5 +234,45 @@ async def main():
     finally:
         logger.info("\nAPI tests completed")
 
+def test_api_connection():
+    # API credentials
+    api_key = "ea2224143d465699a2269a98a7a5cd0961252b4705e87973"
+    api_secret = "e3646cd3e8a59d94d41bedcbd95b20ad6cf2b4fcbe62031fe30927d258e836f0"
+
+    print("Testing CoinDCX API Connection...")
+    print("-" * 50)
+
+    try:
+        # Initialize the data handler
+        handler = CoinDCXDataHandler(api_key, api_secret)
+        
+        # Test account info
+        print("\nFetching account information...")
+        account_info = handler.get_account_info()
+        print("Account Info:")
+        print(f"Name: {account_info.get('name', 'N/A')}")
+        print(f"Email: {account_info.get('email', 'N/A')}")
+        print(f"Status: {account_info.get('status', 'N/A')}")
+        
+        # Test balances
+        print("\nFetching account balances...")
+        balances = handler.get_balances()
+        print("\nNon-zero balances:")
+        for balance in balances:
+            if float(balance['balance']) > 0:
+                print(f"Currency: {balance['currency']}")
+                print(f"Balance: {balance['balance']}")
+                print(f"Locked: {balance['locked_balance']}")
+                print("-" * 30)
+        
+        print("\nAPI connection test completed successfully!")
+        
+    except Exception as e:
+        print(f"\nError testing API connection: {str(e)}")
+        print("\nPlease check:")
+        print("1. API key and secret are correct")
+        print("2. Internet connection is working")
+        print("3. API has necessary permissions")
+
 if __name__ == "__main__":
-    asyncio.run(main()) 
+    test_api_connection() 

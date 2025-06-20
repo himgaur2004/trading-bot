@@ -1,0 +1,223 @@
+[
+  {
+    "pair": "B-BTC_USDT",
+    "status": "analyzed",
+    "current_price": 104750.0,
+    "price_change_24h": null,
+    "volume_24h": 5300.92489,
+    "indicators": {
+      "sma_20": 104568.9475,
+      "sma_50": 104375.0082,
+      "ema_12": 104647.09338605609,
+      "ema_26": 104540.73609939436,
+      "macd": 106.35728666173236,
+      "macd_signal": 89.70319945032738,
+      "rsi": 66.82059676106707,
+      "bb_upper": 104883.09289013354,
+      "bb_lower": 104254.80210986645
+    },
+    "signals": {},
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-ETH_USDT",
+    "status": "analyzed",
+    "current_price": 2524.89,
+    "price_change_24h": null,
+    "volume_24h": 169604.8934,
+    "indicators": {
+      "sma_20": 2518.0855,
+      "sma_50": 2506.7984,
+      "ema_12": 2520.5599714139294,
+      "ema_26": 2515.7409655041524,
+      "macd": 4.8190059097769335,
+      "macd_signal": 4.445450228306835,
+      "rsi": 65.31531531531496,
+      "bb_upper": 2528.1589094473793,
+      "bb_lower": 2508.012090552621
+    },
+    "signals": {},
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-ADA_USDT",
+    "status": "analyzed",
+    "current_price": 0.5984,
+    "price_change_24h": null,
+    "volume_24h": 42998242.900000006,
+    "indicators": {
+      "sma_20": 0.5972,
+      "sma_50": 0.594516,
+      "ema_12": 0.5979663754322819,
+      "ema_26": 0.5967642787083461,
+      "macd": 0.001202096723935786,
+      "macd_signal": 0.0011424353322979379,
+      "rsi": 66.32653061224494,
+      "bb_upper": 0.6003742384084532,
+      "bb_lower": 0.5940257615915467
+    },
+    "signals": {},
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-DOT_USDT",
+    "status": "analyzed",
+    "current_price": 3.58,
+    "price_change_24h": null,
+    "volume_24h": 4018185.2800000003,
+    "indicators": {
+      "sma_20": 3.5762500000000004,
+      "sma_50": 3.5502599999999997,
+      "ema_12": 3.5806463951380016,
+      "ema_26": 3.5712977175174565,
+      "macd": 0.009348677620545143,
+      "macd_signal": 0.00995912752796234,
+      "rsi": 65.51724137931048,
+      "bb_upper": 3.596952148375662,
+      "bb_lower": 3.555547851624339
+    },
+    "signals": {
+      "macd_bearish": true
+    },
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-LINK_USDT",
+    "status": "analyzed",
+    "current_price": 13.1,
+    "price_change_24h": null,
+    "volume_24h": 1209305.42,
+    "indicators": {
+      "sma_20": 13.054999999999998,
+      "sma_50": 13.0098,
+      "ema_12": 13.072451442392543,
+      "ema_26": 13.049005170764534,
+      "macd": 0.02344627162800883,
+      "macd_signal": 0.018114815962350025,
+      "rsi": 65.38461538461542,
+      "bb_upper": 13.121332495807103,
+      "bb_lower": 12.988667504192893
+    },
+    "signals": {},
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-UNI_USDT",
+    "status": "analyzed",
+    "current_price": 7.72,
+    "price_change_24h": null,
+    "volume_24h": 6566475.870000001,
+    "indicators": {
+      "sma_20": 7.66575,
+      "sma_50": 7.584980000000001,
+      "ema_12": 7.6932916765715795,
+      "ema_26": 7.651133832003167,
+      "macd": 0.042157844568412095,
+      "macd_signal": 0.040541711706998995,
+      "rsi": 67.69759450171816,
+      "bb_upper": 7.774311648748299,
+      "bb_lower": 7.5571883512517015
+    },
+    "signals": {},
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-LTC_USDT",
+    "status": "analyzed",
+    "current_price": 85.42,
+    "price_change_24h": null,
+    "volume_24h": 232582.236,
+    "indicators": {
+      "sma_20": 85.1525,
+      "sma_50": 84.9592,
+      "ema_12": 85.26909585828328,
+      "ema_26": 85.11800504348481,
+      "macd": 0.1510908147984651,
+      "macd_signal": 0.11759482434241632,
+      "rsi": 66.66666666666703,
+      "bb_upper": 85.54204089036081,
+      "bb_lower": 84.7629591096392
+    },
+    "signals": {},
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-BCH_USDT",
+    "status": "analyzed",
+    "current_price": 470.4,
+    "price_change_24h": null,
+    "volume_24h": 112839.055,
+    "indicators": {
+      "sma_20": 477.9599999999999,
+      "sma_50": 481.94599999999997,
+      "ema_12": 474.0230626263298,
+      "ema_26": 477.73832977984813,
+      "macd": -3.7152671535183117,
+      "macd_signal": -2.8475132654160564,
+      "rsi": 28.404669260700388,
+      "bb_upper": 489.1998539042777,
+      "bb_lower": 466.72014609572216
+    },
+    "signals": {
+      "rsi_oversold": true
+    },
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true
+  },
+  {
+    "pair": "B-XRP_USDT",
+    "status": "analyzed",
+    "current_price": 2.1545,
+    "price_change_24h": null,
+    "volume_24h": 35332895.1,
+    "indicators": {
+      "sma_20": 2.1525100000000004,
+      "sma_50": 2.151424,
+      "ema_12": 2.152451260594326,
+      "ema_26": 2.1522884879609943,
+      "macd": 0.00016277263333153158,
+      "macd_signal": -5.8621404934593276e-05,
+      "rsi": 59.90990990990972,
+      "bb_upper": 2.1571261729421027,
+      "bb_lower": 2.147893827057898
+    },
+    "signals": {},
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-SOL_USDT",
+    "status": "analyzed",
+    "current_price": 145.16,
+    "price_change_24h": null,
+    "volume_24h": 1372346.691,
+    "indicators": {
+      "sma_20": 144.6205,
+      "sma_50": 143.9946,
+      "ema_12": 144.88378108501462,
+      "ema_26": 144.53651347543257,
+      "macd": 0.3472676095820475,
+      "macd_signal": 0.2957763518745088,
+      "rsi": 71.42857142857194,
+      "bb_upper": 145.5396867114623,
+      "bb_lower": 143.70131328853768
+    },
+    "signals": {
+      "rsi_overbought": true
+    },
+    "prime_strategies": {},
+    "executable_trade": false
+  }
+]

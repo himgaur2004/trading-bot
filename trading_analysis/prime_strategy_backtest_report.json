@@ -1,0 +1,57 @@
+[
+  {
+    "pair": "B-BTC_USDT",
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-ETH_USDT",
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-ADA_USDT",
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-DOT_USDT",
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-LINK_USDT",
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-UNI_USDT",
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-LTC_USDT",
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-BCH_USDT",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true
+  },
+  {
+    "pair": "B-XRP_USDT",
+    "prime_strategies": {},
+    "executable_trade": false
+  },
+  {
+    "pair": "B-SOL_USDT",
+    "prime_strategies": {},
+    "executable_trade": false
+  }
+]

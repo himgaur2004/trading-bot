@@ -1,62 +1,85 @@
 import streamlit as st
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import pandas as pd
-import numpy as np
+import plotly.graph_objects as go
 from typing import Dict, List
-from dashboard.utils.strategy_handler import StrategyType, StrategyHandler
 
 class StrategyVisualizer:
-    def __init__(self, strategy_handler: StrategyHandler):
+    """Component for visualizing trading strategies and results"""
+    
+    def __init__(self, strategy_handler):
         self.strategy_handler = strategy_handler
-
+        
     def show_strategy_selector(self) -> str:
-        """Display strategy selection widget."""
+        """Show strategy selection dropdown"""
         return st.selectbox(
             "Select Strategy",
-            [strategy.value for strategy in StrategyType]
+            [
+                "trend_following",
+                "mean_reversion",
+                "breakout",
+                "grid_trading",
+                "momentum"
+            ]
         )
-
-    def show_strategy_parameters(self, strategy_type: str) -> Dict:
-        """Display strategy parameter inputs."""
+        
+    def show_strategy_parameters(self, strategy: str) -> Dict:
+        """Show parameter inputs for selected strategy"""
         st.subheader("Strategy Parameters")
         
-        parameters = {}
-        col1, col2 = st.columns(2)
+        params = {}
         
-        if strategy_type == StrategyType.MOVING_AVERAGE_CROSSOVER.value:
+        if strategy == "trend_following":
+            col1, col2 = st.columns(2)
             with col1:
-                parameters['fast_ma'] = st.number_input("Fast MA Period", value=9, min_value=1)
-                parameters['slow_ma'] = st.number_input("Slow MA Period", value=21, min_value=1)
-        
-        elif strategy_type == StrategyType.RSI.value:
-            with col1:
-                parameters['rsi_period'] = st.number_input("RSI Period", value=14, min_value=1)
-                parameters['oversold'] = st.number_input("Oversold Level", value=30, min_value=0, max_value=100)
+                params["ema_fast"] = st.number_input("Fast EMA Period", 5, 50, 9)
+                params["ema_slow"] = st.number_input("Slow EMA Period", 10, 200, 21)
             with col2:
-                parameters['overbought'] = st.number_input("Overbought Level", value=70, min_value=0, max_value=100)
-        
-        elif strategy_type == StrategyType.MACD.value:
+                params["atr_period"] = st.number_input("ATR Period", 5, 50, 14)
+                params["atr_multiplier"] = st.number_input("ATR Multiplier", 1.0, 5.0, 2.0)
+                
+        elif strategy == "mean_reversion":
+            col1, col2 = st.columns(2)
             with col1:
-                parameters['fast_period'] = st.number_input("Fast Period", value=12, min_value=1)
-                parameters['slow_period'] = st.number_input("Slow Period", value=26, min_value=1)
+                params["rsi_period"] = st.number_input("RSI Period", 5, 50, 14)
+                params["rsi_overbought"] = st.number_input("RSI Overbought", 50, 90, 70)
+                params["rsi_oversold"] = st.number_input("RSI Oversold", 10, 50, 30)
             with col2:
-                parameters['signal_period'] = st.number_input("Signal Period", value=9, min_value=1)
-        
-        elif strategy_type == StrategyType.BOLLINGER_BANDS.value:
+                params["bb_period"] = st.number_input("Bollinger Period", 5, 50, 20)
+                params["bb_std"] = st.number_input("Bollinger StdDev", 1.0, 3.0, 2.0)
+                
+        elif strategy == "breakout":
+            col1, col2 = st.columns(2)
             with col1:
-                parameters['window'] = st.number_input("Window Period", value=20, min_value=1)
-                parameters['std_dev'] = st.number_input("Standard Deviation", value=2.0, min_value=0.1)
+                params["breakout_period"] = st.number_input("Breakout Period", 5, 100, 20)
+                params["volume_factor"] = st.number_input("Volume Factor", 1.0, 5.0, 2.0)
+            with col2:
+                params["atr_period"] = st.number_input("ATR Period", 5, 50, 14)
+                params["atr_multiplier"] = st.number_input("ATR Multiplier", 1.0, 5.0, 2.0)
+                
+        elif strategy == "grid_trading":
+            col1, col2 = st.columns(2)
+            with col1:
+                params["grid_levels"] = st.number_input("Grid Levels", 3, 20, 5)
+                params["grid_spacing"] = st.number_input("Grid Spacing %", 0.5, 10.0, 2.0)
+            with col2:
+                params["take_profit"] = st.number_input("Take Profit %", 0.5, 10.0, 1.0)
+                params["stop_loss"] = st.number_input("Stop Loss %", 0.5, 10.0, 2.0)
+                
+        elif strategy == "momentum":
+            col1, col2 = st.columns(2)
+            with col1:
+                params["macd_fast"] = st.number_input("MACD Fast", 5, 50, 12)
+                params["macd_slow"] = st.number_input("MACD Slow", 10, 100, 26)
+                params["macd_signal"] = st.number_input("MACD Signal", 5, 50, 9)
+            with col2:
+                params["rsi_period"] = st.number_input("RSI Period", 5, 50, 14)
+                params["volume_ma"] = st.number_input("Volume MA", 5, 50, 20)
+                
+        return params
         
-        return parameters
-
-    def plot_strategy_results(self, data: pd.DataFrame, signals: pd.DataFrame):
-        """Plot strategy results with indicators."""
-        st.subheader("Strategy Analysis")
-        
-        # Create figure with secondary y-axis
-        fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
-                           vertical_spacing=0.03, row_heights=[0.7, 0.3])
+    def plot_results(self, data: pd.DataFrame, signals: pd.DataFrame):
+        """Plot trading results with signals"""
+        fig = go.Figure()
         
         # Add candlestick chart
         fig.add_trace(go.Candlestick(
@@ -66,145 +89,121 @@ class StrategyVisualizer:
             low=data['low'],
             close=data['close'],
             name='Price'
-        ), row=1, col=1)
+        ))
         
         # Add buy signals
-        buy_signals = signals[signals['signal'] == 1]
-        fig.add_trace(go.Scatter(
-            x=buy_signals.index,
-            y=buy_signals['close'],
-            mode='markers',
-            marker=dict(symbol='triangle-up', size=15, color='green'),
-            name='Buy Signal'
-        ), row=1, col=1)
-        
+        if 'buy' in signals.columns:
+            buy_points = signals[signals['buy'] == 1]
+            fig.add_trace(go.Scatter(
+                x=buy_points.index,
+                y=buy_points['close'],
+                mode='markers',
+                marker=dict(
+                    symbol='triangle-up',
+                    size=12,
+                    color='green'
+                ),
+                name='Buy Signal'
+            ))
+            
         # Add sell signals
-        sell_signals = signals[signals['signal'] == -1]
-        fig.add_trace(go.Scatter(
-            x=sell_signals.index,
-            y=sell_signals['close'],
-            mode='markers',
-            marker=dict(symbol='triangle-down', size=15, color='red'),
-            name='Sell Signal'
-        ), row=1, col=1)
-        
-        # Add volume bars
-        fig.add_trace(go.Bar(
-            x=data.index,
-            y=data['volume'],
-            name='Volume'
-        ), row=2, col=1)
-        
-        # Update layout
+        if 'sell' in signals.columns:
+            sell_points = signals[signals['sell'] == 1]
+            fig.add_trace(go.Scatter(
+                x=sell_points.index,
+                y=sell_points['close'],
+                mode='markers',
+                marker=dict(
+                    symbol='triangle-down',
+                    size=12,
+                    color='red'
+                ),
+                name='Sell Signal'
+            ))
+            
         fig.update_layout(
+            title='Trading Signals',
+            yaxis_title='Price',
             template='plotly_dark',
-            xaxis_rangeslider_visible=False,
-            height=800,
-            title_text="Strategy Performance"
+            height=600
         )
         
         st.plotly_chart(fig, use_container_width=True)
-
-    def show_performance_metrics(self, metrics: Dict):
-        """Display strategy performance metrics."""
+        
+    def show_metrics(self, metrics: Dict):
+        """Display strategy performance metrics"""
         st.subheader("Performance Metrics")
         
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4 = st.columns(4)
         
         with col1:
             st.metric(
-                label="Win Rate",
-                value=f"{metrics['win_rate']:.2%}",
-                delta=f"{metrics['winning_trades']} / {metrics['total_trades']} trades"
+                "Total Return",
+                f"{metrics.get('total_return', 0):.2f}%",
+                delta=None
             )
-        
+            
         with col2:
             st.metric(
-                label="Profit Factor",
-                value=f"{metrics['profit_factor']:.2f}",
-                delta="Good" if metrics['profit_factor'] > 2 else "Fair" if metrics['profit_factor'] > 1 else "Poor"
+                "Win Rate",
+                f"{metrics.get('win_rate', 0):.1f}%",
+                delta=None
             )
-        
+            
         with col3:
             st.metric(
-                label="Max Drawdown",
-                value=f"{metrics['max_drawdown']:.2%}",
-                delta=f"Total Return: {metrics['total_return']:.2%}"
+                "Profit Factor",
+                f"{metrics.get('profit_factor', 0):.2f}",
+                delta=None
             )
-        
-        # Additional metrics
-        st.markdown("### Risk Metrics")
-        risk_col1, risk_col2 = st.columns(2)
-        
-        with risk_col1:
+            
+        with col4:
             st.metric(
-                label="Sharpe Ratio",
-                value=f"{metrics['sharpe_ratio']:.2f}",
-                delta="Good" if metrics['sharpe_ratio'] > 1 else "Fair" if metrics['sharpe_ratio'] > 0 else "Poor"
+                "Max Drawdown",
+                f"{metrics.get('max_drawdown', 0):.2f}%",
+                delta=None
             )
-        
-        with risk_col2:
-            st.metric(
-                label="Sortino Ratio",
-                value=f"{metrics['sortino_ratio']:.2f}",
-                delta="Good" if metrics['sortino_ratio'] > 1 else "Fair" if metrics['sortino_ratio'] > 0 else "Poor"
-            )
-
-    def plot_equity_curve(self, data: pd.DataFrame):
-        """Plot strategy equity curve."""
-        st.subheader("Equity Curve")
-        
+            
+    def plot_equity_curve(self, signals: pd.DataFrame):
+        """Plot equity curve"""
+        if 'equity' not in signals.columns:
+            return
+            
         fig = go.Figure()
         
-        # Calculate cumulative returns
-        cumulative_returns = (1 + data['strategy_returns']).cumprod()
-        
         fig.add_trace(go.Scatter(
-            x=data.index,
-            y=cumulative_returns,
+            x=signals.index,
+            y=signals['equity'],
             mode='lines',
-            name='Strategy Performance',
-            line=dict(color='green', width=2)
-        ))
-        
-        # Add buy & hold comparison
-        buy_hold_returns = (1 + data['returns']).cumprod()
-        fig.add_trace(go.Scatter(
-            x=data.index,
-            y=buy_hold_returns,
-            mode='lines',
-            name='Buy & Hold',
-            line=dict(color='gray', width=1, dash='dash')
+            name='Equity'
         ))
         
         fig.update_layout(
+            title='Equity Curve',
+            yaxis_title='Equity',
             template='plotly_dark',
-            title='Strategy vs Buy & Hold Performance',
-            xaxis_title='Date',
-            yaxis_title='Growth of $1',
             height=400
         )
         
         st.plotly_chart(fig, use_container_width=True)
-
-    def show_trade_list(self, data: pd.DataFrame):
-        """Display list of trades with details."""
+        
+    def show_trade_list(self, signals: pd.DataFrame):
+        """Display list of trades"""
+        if 'trade_type' not in signals.columns:
+            return
+            
         st.subheader("Trade List")
         
-        # Get only rows where signals changed
-        trades = data[data['signal'] != 0].copy()
-        trades['type'] = trades['signal'].map({1: 'BUY', -1: 'SELL'})
-        
-        trade_data = pd.DataFrame({
-            'Date': trades.index,
-            'Type': trades['type'],
-            'Price': trades['close'].map('${:,.2f}'.format),
-            'Return': trades['strategy_returns'].map('{:,.2%}'.format),
-            'Volume': trades['volume'].map('{:,.0f}'.format)
-        })
+        trades = signals[signals['trade_type'].notna()].copy()
+        trades['profit'] = trades['profit'].fillna(0)
+        trades['profit_pct'] = trades['profit_pct'].fillna(0)
         
         st.dataframe(
-            trade_data,
-            use_container_width=True,
-            hide_index=True
+            trades[[
+                'trade_type',
+                'price',
+                'profit',
+                'profit_pct'
+            ]],
+            use_container_width=True
         ) 

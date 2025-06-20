@@ -1,0 +1,256 @@
+[
+  {
+    "pair": "B-IOTX_USDT",
+    "status": "analyzed",
+    "current_price": 0.0226,
+    "price_change_24h": null,
+    "volume_24h": "25017982",
+    "indicators": {
+      "sma_20": 0.0222645,
+      "sma_50": 0.0221326,
+      "ema_12": 0.022337205332387703,
+      "ema_26": 0.02226217140229408,
+      "macd": 7.50339300936223e-05,
+      "macd_signal": 6.369330306277055e-05,
+      "rsi": 73.91304347826082,
+      "bb_upper": 0.02256694442725718,
+      "bb_lower": 0.02196205557274282
+    },
+    "signals": {
+      "macd_bullish": true,
+      "rsi_overbought": true,
+      "bb_overbought": true
+    },
+    "signal_count": 3
+  },
+  {
+    "pair": "B-ETH_USDT",
+    "status": "analyzed",
+    "current_price": 2533.7,
+    "price_change_24h": null,
+    "volume_24h": 170322.7069,
+    "indicators": {
+      "sma_20": 2520.7235,
+      "sma_50": 2510.1284,
+      "ema_12": 2524.7605803400147,
+      "ema_26": 2519.4908400274608,
+      "macd": 5.2697403125539495,
+      "macd_signal": 4.707556147577136,
+      "rsi": 72.40911557243615,
+      "bb_upper": 2533.49806564304,
+      "bb_lower": 2507.9489343569603
+    },
+    "signals": {
+      "rsi_overbought": true,
+      "bb_overbought": true
+    },
+    "signal_count": 2
+  },
+  {
+    "pair": "B-MKR_USDT",
+    "status": "analyzed",
+    "current_price": 1987.0,
+    "price_change_24h": null,
+    "volume_24h": 3488.7668,
+    "indicators": {
+      "sma_20": 1968.65,
+      "sma_50": 1959.34,
+      "ema_12": 1969.8471981513792,
+      "ema_26": 1966.9580554389538,
+      "macd": 2.8891427124253823,
+      "macd_signal": 2.4228638569052094,
+      "rsi": 56.38297872340426,
+      "bb_upper": 1986.2092230975393,
+      "bb_lower": 1951.090776902461
+    },
+    "signals": {
+      "macd_bullish": true,
+      "bb_overbought": true
+    },
+    "signal_count": 2
+  },
+  {
+    "pair": "B-XMR_USDT",
+    "status": "analyzed",
+    "current_price": 121.8,
+    "price_change_24h": null,
+    "volume_24h": 508966.846,
+    "indicators": {
+      "sma_20": 120.82000000000001,
+      "sma_50": 120.706,
+      "ema_12": 121.08124625046273,
+      "ema_26": 120.86760158858618,
+      "macd": 0.2136446618765433,
+      "macd_signal": 0.12199925661812538,
+      "rsi": 79.31034482758635,
+      "bb_upper": 121.66255251281174,
+      "bb_lower": 119.97744748718827
+    },
+    "signals": {
+      "rsi_overbought": true,
+      "bb_overbought": true
+    },
+    "signal_count": 2
+  },
+  {
+    "pair": "B-DENT_USDT",
+    "status": "analyzed",
+    "current_price": 0.0006,
+    "price_change_24h": null,
+    "volume_24h": "415087424",
+    "indicators": {
+      "sma_20": 0.0005938499999999999,
+      "sma_50": 0.0005891199999999999,
+      "ema_12": 0.0005954045758268959,
+      "ema_26": 0.000593068394313074,
+      "macd": 2.336181513821903e-06,
+      "macd_signal": 2.133145537136089e-06,
+      "rsi": 66.66666666666666,
+      "bb_upper": 0.0005999119607736303,
+      "bb_lower": 0.0005877880392263696
+    },
+    "signals": {
+      "macd_bullish": true,
+      "bb_overbought": true
+    },
+    "signal_count": 2
+  },
+  {
+    "pair": "B-FLUX_USDT",
+    "status": "analyzed",
+    "current_price": 0.1976,
+    "price_change_24h": null,
+    "volume_24h": 3234556.94,
+    "indicators": {
+      "sma_20": 0.19568500000000003,
+      "sma_50": 0.19366400000000003,
+      "ema_12": 0.1963500317730295,
+      "ema_26": 0.19537754790393808,
+      "macd": 0.0009724838690914339,
+      "macd_signal": 0.0009420451680467115,
+      "rsi": 74.99999999999984,
+      "bb_upper": 0.1980948700554609,
+      "bb_lower": 0.19327512994453916
+    },
+    "signals": {
+      "macd_bullish": true,
+      "rsi_overbought": true
+    },
+    "signal_count": 2
+  },
+  {
+    "pair": "B-KAVA_USDT",
+    "status": "analyzed",
+    "current_price": 0.4107,
+    "price_change_24h": null,
+    "volume_24h": 2512514.4,
+    "indicators": {
+      "sma_20": 0.40873,
+      "sma_50": 0.40807000000000004,
+      "ema_12": 0.4091111292446154,
+      "ema_26": 0.4086505849078383,
+      "macd": 0.00046054433677711337,
+      "macd_signal": 0.0003649093215068335,
+      "rsi": 64.78873239436615,
+      "bb_upper": 0.41060178496290967,
+      "bb_lower": 0.4068582150370903
+    },
+    "signals": {
+      "macd_bullish": true,
+      "bb_overbought": true
+    },
+    "signal_count": 2
+  },
+  {
+    "pair": "B-RAD_USDT",
+    "status": "analyzed",
+    "current_price": 0.652,
+    "price_change_24h": null,
+    "volume_24h": 399304.10000000003,
+    "indicators": {
+      "sma_20": 0.6492500000000001,
+      "sma_50": 0.647,
+      "ema_12": 0.6497984005384587,
+      "ema_26": 0.6487907938491446,
+      "macd": 0.0010076066893141,
+      "macd_signal": 0.0009926784885327948,
+      "rsi": 61.53846153846153,
+      "bb_upper": 0.6517526301953631,
+      "bb_lower": 0.6467473698046371
+    },
+    "signals": {
+      "macd_bullish": true,
+      "bb_overbought": true
+    },
+    "signal_count": 2
+  },
+  {
+    "pair": "B-REN_USDT",
+    "status": "analyzed",
+    "current_price": 0.04792,
+    "price_change_24h": null,
+    "volume_24h": "45666923",
+    "indicators": {
+      "sma_20": 0.0468045,
+      "sma_50": 0.0471556,
+      "ema_12": 0.04714738424372891,
+      "ema_26": 0.04699104486709091,
+      "macd": 0.0001563393766380039,
+      "macd_signal": -3.5316329555769384e-05,
+      "rsi": 71.16564417177909,
+      "bb_upper": 0.047824870933585076,
+      "bb_lower": 0.04578412906641492
+    },
+    "signals": {
+      "rsi_overbought": true,
+      "bb_overbought": true
+    },
+    "signal_count": 2
+  },
+  {
+    "pair": "B-STRAX_USDT",
+    "status": "analyzed",
+    "current_price": 0.04218,
+    "price_change_24h": null,
+    "volume_24h": "42033948",
+    "indicators": {
+      "sma_20": 0.0420055,
+      "sma_50": 0.041996599999999995,
+      "ema_12": 0.04207725372182009,
+      "ema_26": 0.042030870291477666,
+      "macd": 4.6383430342425425e-05,
+      "macd_signal": 2.2646376510513105e-05,
+      "rsi": 70.90909090909093,
+      "bb_upper": 0.042204600609317224,
+      "bb_lower": 0.04180639939068278
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "signal_count": 2
+  },
+  {
+    "pair": "B-YFI_USDT",
+    "status": "analyzed",
+    "current_price": 5052.0,
+    "price_change_24h": null,
+    "volume_24h": 108.15505999999999,
+    "indicators": {
+      "sma_20": 5026.55,
+      "sma_50": 5001.88,
+      "ema_12": 5033.078140640333,
+      "ema_26": 5022.033033576498,
+      "macd": 11.045107063834621,
+      "macd_signal": 10.333574186087542,
+      "rsi": 65.55555555555556,
+      "bb_upper": 5050.615480847501,
+      "bb_lower": 5002.484519152499
+    },
+    "signals": {
+      "macd_bullish": true,
+      "bb_overbought": true
+    },
+    "signal_count": 2
+  }
+]

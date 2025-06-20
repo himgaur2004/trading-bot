@@ -28,6 +28,7 @@ __pycache__/
 *$py.class
 *.so
 .Python
+env/
 build/
 develop-eggs/
 dist/
@@ -58,6 +59,7 @@ env/
 # Logs
 *.log
 logs/
+trading_bot.log
 
 # Local development
 .env

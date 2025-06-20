@@ -1,0 +1,1637 @@
+[
+  {
+    "pair": "B-DASH_USDT",
+    "status": "analyzed",
+    "current_price": 19.98,
+    "price_change_24h": null,
+    "volume_24h": 114427.63,
+    "indicators": {
+      "sma_20": 19.802,
+      "sma_50": 19.7988,
+      "ema_12": 19.896962995330412,
+      "ema_26": 19.8378626749104,
+      "macd": 0.05910032042001134,
+      "macd_signal": 0.02629065165634478,
+      "rsi": 78.94736842105333,
+      "bb_upper": 20.06482673900657,
+      "bb_lower": 19.53917326099343
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-ONT_USDT",
+    "status": "analyzed",
+    "current_price": 0.1238,
+    "price_change_24h": null,
+    "volume_24h": 16594621.799999997,
+    "indicators": {
+      "sma_20": 0.12194500000000001,
+      "sma_50": 0.12193,
+      "ema_12": 0.12277217024371036,
+      "ema_26": 0.12223418399676786,
+      "macd": 0.0005379862469424984,
+      "macd_signal": 0.00023998239588861648,
+      "rsi": 84.44444444444431,
+      "bb_upper": 0.12410927938657601,
+      "bb_lower": 0.11978072061342401
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-BAND_USDT",
+    "status": "analyzed",
+    "current_price": 0.6099,
+    "price_change_24h": null,
+    "volume_24h": 2918781.3000000003,
+    "indicators": {
+      "sma_20": 0.602185,
+      "sma_50": 0.602082,
+      "ema_12": 0.6068910090084755,
+      "ema_26": 0.6039996040315897,
+      "macd": 0.002891404976885781,
+      "macd_signal": 0.0014000832076633064,
+      "rsi": 76.92307692307725,
+      "bb_upper": 0.614866071679765,
+      "bb_lower": 0.5895039283202349
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-SUSHI_USDT",
+    "status": "analyzed",
+    "current_price": 0.63,
+    "price_change_24h": null,
+    "volume_24h": 27277860.0,
+    "indicators": {
+      "sma_20": 0.6178250000000001,
+      "sma_50": 0.617418,
+      "ema_12": 0.6240383259420345,
+      "ema_26": 0.6201057032465028,
+      "macd": 0.003932622695531629,
+      "macd_signal": 0.0017851952809481467,
+      "rsi": 75.74931880108991,
+      "bb_upper": 0.6342322994025276,
+      "bb_lower": 0.6014177005974726
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-ICX_USDT",
+    "status": "analyzed",
+    "current_price": 0.1231,
+    "price_change_24h": null,
+    "volume_24h": 105343869.0,
+    "indicators": {
+      "sma_20": 0.12145999999999998,
+      "sma_50": 0.11846399999999999,
+      "ema_12": 0.12262870907206155,
+      "ema_26": 0.12106289588572336,
+      "macd": 0.001565813186338194,
+      "macd_signal": 0.001570781046247781,
+      "rsi": 72.94117647058826,
+      "bb_upper": 0.12576539441313234,
+      "bb_lower": 0.11715460558686762
+    },
+    "signals": {
+      "macd_bearish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "bearish",
+    "best_strategy": "rsi_macd_divergence",
+    "prime_strategies": {
+      "rsi_macd_divergence": {
+        "rsi_macd_divergence": "True",
+        "accuracy": 0.86
+      }
+    },
+    "executable_trade": true,
+    "signal_count": 2
+  },
+  {
+    "pair": "B-AVAX_USDT",
+    "status": "analyzed",
+    "current_price": 18.292,
+    "price_change_24h": null,
+    "volume_24h": 11919712.0,
+    "indicators": {
+      "sma_20": 18.06045,
+      "sma_50": 18.05388,
+      "ema_12": 18.19368136167787,
+      "ema_26": 18.10844532402288,
+      "macd": 0.08523603765499033,
+      "macd_signal": 0.044434795773787374,
+      "rsi": 74.03973509933799,
+      "bb_upper": 18.414571879108223,
+      "bb_lower": 17.706328120891776
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-KSM_USDT",
+    "status": "analyzed",
+    "current_price": 14.423,
+    "price_change_24h": null,
+    "volume_24h": 202283.60000000003,
+    "indicators": {
+      "sma_20": 14.1754,
+      "sma_50": 14.173700000000002,
+      "ema_12": 14.288261484661648,
+      "ema_26": 14.216445938152347,
+      "macd": 0.07181554650930089,
+      "macd_signal": 0.03229921183991279,
+      "rsi": 87.83269961977184,
+      "bb_upper": 14.467439218707282,
+      "bb_lower": 13.883360781292717
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-MANA_USDT",
+    "status": "analyzed",
+    "current_price": 0.2576,
+    "price_change_24h": null,
+    "volume_24h": 29001273.0,
+    "indicators": {
+      "sma_20": 0.25369,
+      "sma_50": 0.25364800000000004,
+      "ema_12": 0.2556445762945712,
+      "ema_26": 0.25438737537420486,
+      "macd": 0.0012572009203663526,
+      "macd_signal": 0.0006364500006901674,
+      "rsi": 87.64044943820231,
+      "bb_upper": 0.2587537618635287,
+      "bb_lower": 0.24862623813647136
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-BTCDOM_USDT",
+    "status": "analyzed",
+    "current_price": 5399.7,
+    "price_change_24h": null,
+    "volume_24h": 1351.9350000000002,
+    "indicators": {
+      "sma_20": 5384.265,
+      "sma_50": 5370.647999999999,
+      "ema_12": 5386.342627391437,
+      "ema_26": 5381.060874639678,
+      "macd": 5.281752751759086,
+      "macd_signal": 4.612550979220697,
+      "rsi": 65.26548672566337,
+      "bb_upper": 5395.477826302237,
+      "bb_lower": 5373.0521736977635
+    },
+    "signals": {
+      "macd_bullish": true,
+      "bb_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "liquidation_heatmap",
+    "prime_strategies": {
+      "liquidation_heatmap": {
+        "tested_liquidity_cluster": true,
+        "accuracy": 0.99
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "macd_bullish"
+    ],
+    "conflict_bearish": [
+      "bb_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-AR_USDT",
+    "status": "analyzed",
+    "current_price": 5.469,
+    "price_change_24h": null,
+    "volume_24h": 2341965.3,
+    "indicators": {
+      "sma_20": 5.3451,
+      "sma_50": 5.34298,
+      "ema_12": 5.408936259348444,
+      "ema_26": 5.368747215181636,
+      "macd": 0.0401890441668078,
+      "macd_signal": 0.01902379592616265,
+      "rsi": 84.09090909090901,
+      "bb_upper": 5.512463329945742,
+      "bb_lower": 5.177736670054259
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-LPT_USDT",
+    "status": "analyzed",
+    "current_price": 6.273,
+    "price_change_24h": null,
+    "volume_24h": 6999393.5,
+    "indicators": {
+      "sma_20": 6.1894,
+      "sma_50": 6.18838,
+      "ema_12": 6.236323799188789,
+      "ema_26": 6.2069668362665045,
+      "macd": 0.029356962922284957,
+      "macd_signal": 0.014780614563307991,
+      "rsi": 74.51612903225805,
+      "bb_upper": 6.3187357930675825,
+      "bb_lower": 6.0600642069324175
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-IMX_USDT",
+    "status": "analyzed",
+    "current_price": 0.4113,
+    "price_change_24h": null,
+    "volume_24h": 24923505.0,
+    "indicators": {
+      "sma_20": 0.40567000000000003,
+      "sma_50": 0.40561600000000003,
+      "ema_12": 0.40901827583435,
+      "ema_26": 0.40697479431494255,
+      "macd": 0.002043481519407475,
+      "macd_signal": 0.000984517340891146,
+      "rsi": 77.20207253886007,
+      "bb_upper": 0.4148243719782295,
+      "bb_lower": 0.39651562802177054
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-APT_USDT",
+    "status": "analyzed",
+    "current_price": 4.4528,
+    "price_change_24h": null,
+    "volume_24h": 9927299.6,
+    "indicators": {
+      "sma_20": 4.380695,
+      "sma_50": 4.378436,
+      "ema_12": 4.414495811038438,
+      "ema_26": 4.392995692634189,
+      "macd": 0.021500118404248703,
+      "macd_signal": 0.01026875308871834,
+      "rsi": 86.2467866323904,
+      "bb_upper": 4.468096011074488,
+      "bb_lower": 4.293293988925512
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-FET_USDT",
+    "status": "analyzed",
+    "current_price": 0.6892,
+    "price_change_24h": null,
+    "volume_24h": 186416871.0,
+    "indicators": {
+      "sma_20": 0.6769649999999999,
+      "sma_50": 0.676906,
+      "ema_12": 0.6839641744912647,
+      "ema_26": 0.6798482051070488,
+      "macd": 0.0041159693842158784,
+      "macd_signal": 0.002111069179253242,
+      "rsi": 86.4864864864866,
+      "bb_upper": 0.6960974772105052,
+      "bb_lower": 0.6578325227894947
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-GMX_USDT",
+    "status": "analyzed",
+    "current_price": 14.795,
+    "price_change_24h": null,
+    "volume_24h": 123186.58000000002,
+    "indicators": {
+      "sma_20": 14.56735,
+      "sma_50": 14.56636,
+      "ema_12": 14.671265943668084,
+      "ema_26": 14.607896793876565,
+      "macd": 0.06336914979151942,
+      "macd_signal": 0.025655738891818842,
+      "rsi": 79.43925233644845,
+      "bb_upper": 14.833439241064953,
+      "bb_lower": 14.301260758935046
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-CKB_USDT",
+    "status": "analyzed",
+    "current_price": 0.003626,
+    "price_change_24h": null,
+    "volume_24h": 407702233.0,
+    "indicators": {
+      "sma_20": 0.0035666000000000005,
+      "sma_50": 0.00356448,
+      "ema_12": 0.0035966139342508085,
+      "ema_26": 0.0035771889104816916,
+      "macd": 1.942502376911688e-05,
+      "macd_signal": 1.0095404487094244e-05,
+      "rsi": 86.30136986301365,
+      "bb_upper": 0.00364569594440332,
+      "bb_lower": 0.003487504055596681
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-MAV_USDT",
+    "status": "analyzed",
+    "current_price": 0.04601,
+    "price_change_24h": null,
+    "volume_24h": 44172441.0,
+    "indicators": {
+      "sma_20": 0.044701500000000005,
+      "sma_50": 0.0446944,
+      "ema_12": 0.045366690753445967,
+      "ema_26": 0.04496310328603415,
+      "macd": 0.0004035874674118145,
+      "macd_signal": 0.00019749983779740715,
+      "rsi": 91.25874125874145,
+      "bb_upper": 0.046440928520792804,
+      "bb_lower": 0.042962071479207206
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-BNT_USDT",
+    "status": "analyzed",
+    "current_price": 0.60758,
+    "price_change_24h": null,
+    "volume_24h": 1846131.0,
+    "indicators": {
+      "sma_20": 0.6012164999999999,
+      "sma_50": 0.6010512,
+      "ema_12": 0.6037548680482255,
+      "ema_26": 0.6021513329301541,
+      "macd": 0.0016035351180714308,
+      "macd_signal": 0.000703560187014957,
+      "rsi": 74.62954647507877,
+      "bb_upper": 0.6082398243740522,
+      "bb_lower": 0.5941931756259476
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "liquidation_heatmap": {
+        "tested_liquidity_cluster": true,
+        "accuracy": 0.99
+      },
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-RIF_USDT",
+    "status": "analyzed",
+    "current_price": 0.05163,
+    "price_change_24h": null,
+    "volume_24h": 26377508.0,
+    "indicators": {
+      "sma_20": 0.050982000000000006,
+      "sma_50": 0.0509746,
+      "ema_12": 0.05131191826223978,
+      "ema_26": 0.05111810028993867,
+      "macd": 0.0001938179723011066,
+      "macd_signal": 9.455569090103394e-05,
+      "rsi": 95.00000000000087,
+      "bb_upper": 0.0518720053222786,
+      "bb_lower": 0.050091994677721415
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-CAKE_USDT",
+    "status": "analyzed",
+    "current_price": 2.2388,
+    "price_change_24h": null,
+    "volume_24h": 6629365.0,
+    "indicators": {
+      "sma_20": 2.20441,
+      "sma_50": 2.20311,
+      "ema_12": 2.2200841371122038,
+      "ema_26": 2.2098165703106463,
+      "macd": 0.010267566801557493,
+      "macd_signal": 0.004981784112884855,
+      "rsi": 90.95022624434361,
+      "bb_upper": 2.2440539362855234,
+      "bb_lower": 2.164766063714477
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-TOKEN_USDT",
+    "status": "analyzed",
+    "current_price": 0.0141,
+    "price_change_24h": null,
+    "volume_24h": 140830600.0,
+    "indicators": {
+      "sma_20": 0.013755499999999999,
+      "sma_50": 0.0137462,
+      "ema_12": 0.013921655210323696,
+      "ema_26": 0.01381663595551814,
+      "macd": 0.00010501925480555646,
+      "macd_signal": 5.24524231581262e-05,
+      "rsi": 92.64705882352943,
+      "bb_upper": 0.01418226136558726,
+      "bb_lower": 0.013328738634412737
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-PYTH_USDT",
+    "status": "analyzed",
+    "current_price": 0.1005,
+    "price_change_24h": null,
+    "volume_24h": 138794867.0,
+    "indicators": {
+      "sma_20": 0.0977135,
+      "sma_50": 0.0976868,
+      "ema_12": 0.09903196374290013,
+      "ema_26": 0.09820640468049892,
+      "macd": 0.0008255590624012127,
+      "macd_signal": 0.0004099350479617021,
+      "rsi": 83.23170731707314,
+      "bb_upper": 0.10110855073212233,
+      "bb_lower": 0.09431844926787766
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-AUCTION_USDT",
+    "status": "analyzed",
+    "current_price": 9.541,
+    "price_change_24h": null,
+    "volume_24h": 450065.38,
+    "indicators": {
+      "sma_20": 9.4312,
+      "sma_50": 9.428420000000001,
+      "ema_12": 9.487594002584382,
+      "ema_26": 9.452321774197065,
+      "macd": 0.03527222838731703,
+      "macd_signal": 0.017947000605589812,
+      "rsi": 80.69620253164598,
+      "bb_upper": 9.581054104486936,
+      "bb_lower": 9.281345895513065
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-WIF_USDT",
+    "status": "analyzed",
+    "current_price": 0.8074,
+    "price_change_24h": null,
+    "volume_24h": 311771229.0999999,
+    "indicators": {
+      "sma_20": 0.791095,
+      "sma_50": 0.7906759999999999,
+      "ema_12": 0.8002407280697714,
+      "ema_26": 0.7944394474297399,
+      "macd": 0.005801280640031492,
+      "macd_signal": 0.0027541855995238777,
+      "rsi": 73.89830508474579,
+      "bb_upper": 0.8159309226249313,
+      "bb_lower": 0.7662590773750687
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-VOXEL_USDT",
+    "status": "analyzed",
+    "current_price": 0.05034,
+    "price_change_24h": null,
+    "volume_24h": 54562911.0,
+    "indicators": {
+      "sma_20": 0.0494915,
+      "sma_50": 0.049488399999999995,
+      "ema_12": 0.049892313815027484,
+      "ema_26": 0.049634560082523656,
+      "macd": 0.0002577537325038279,
+      "macd_signal": 0.00012457874576601917,
+      "rsi": 91.00529100529117,
+      "bb_upper": 0.050575668854590076,
+      "bb_lower": 0.048407331145409925
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-BSW_USDT",
+    "status": "analyzed",
+    "current_price": 0.02227,
+    "price_change_24h": null,
+    "volume_24h": 51141181.0,
+    "indicators": {
+      "sma_20": 0.0219555,
+      "sma_50": 0.0219552,
+      "ema_12": 0.02211100002863322,
+      "ema_26": 0.022015109930200442,
+      "macd": 9.589009843277707e-05,
+      "macd_signal": 4.6452325606589856e-05,
+      "rsi": 84.88372093023277,
+      "bb_upper": 0.022389937325138737,
+      "bb_lower": 0.02152106267486126
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-RPL_USDT",
+    "status": "analyzed",
+    "current_price": 5.589,
+    "price_change_24h": null,
+    "volume_24h": 1503589.0,
+    "indicators": {
+      "sma_20": 5.47765,
+      "sma_50": 5.477080000000001,
+      "ema_12": 5.529316122752156,
+      "ema_26": 5.498604093451464,
+      "macd": 0.030712029300691945,
+      "macd_signal": 0.014139902549109434,
+      "rsi": 85.22727272727285,
+      "bb_upper": 5.6099753963769405,
+      "bb_lower": 5.345324603623059
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-KDA_USDT",
+    "status": "analyzed",
+    "current_price": 0.3977,
+    "price_change_24h": null,
+    "volume_24h": 8564118.0,
+    "indicators": {
+      "sma_20": 0.386985,
+      "sma_50": 0.386968,
+      "ema_12": 0.3918971654300292,
+      "ema_26": 0.38886297373598633,
+      "macd": 0.003034191694042898,
+      "macd_signal": 0.001485469255715889,
+      "rsi": 89.40092165898629,
+      "bb_upper": 0.39973313092595386,
+      "bb_lower": 0.3742368690740462
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "liquidation_heatmap": {
+        "tested_liquidity_cluster": true,
+        "accuracy": 0.99
+      },
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-COS_USDT",
+    "status": "analyzed",
+    "current_price": 0.003074,
+    "price_change_24h": null,
+    "volume_24h": 977942209.0,
+    "indicators": {
+      "sma_20": 0.00302895,
+      "sma_50": 0.00303986,
+      "ema_12": 0.0030440934426488797,
+      "ema_26": 0.003036789748935123,
+      "macd": 7.303693713756748e-06,
+      "macd_signal": 5.260667190285549e-07,
+      "rsi": 87.50000000000045,
+      "bb_upper": 0.0030703745033003886,
+      "bb_lower": 0.002987525496699611
+    },
+    "signals": {
+      "rsi_overbought": true,
+      "bb_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "bearish",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "liquidation_heatmap": {
+        "tested_liquidity_cluster": true,
+        "accuracy": 0.99
+      },
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "signal_count": 2
+  },
+  {
+    "pair": "B-1000CAT_USDT",
+    "status": "analyzed",
+    "current_price": 0.006301,
+    "price_change_24h": null,
+    "volume_24h": 365587302.0,
+    "indicators": {
+      "sma_20": 0.0061141500000000005,
+      "sma_50": 0.006108100000000001,
+      "ema_12": 0.006193527745050781,
+      "ema_26": 0.006142314751268971,
+      "macd": 5.121299378181045e-05,
+      "macd_signal": 2.509381070609185e-05,
+      "rsi": 87.02290076335882,
+      "bb_upper": 0.006318258614016629,
+      "bb_lower": 0.0059100413859833716
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "liquidation_heatmap": {
+        "tested_liquidity_cluster": true,
+        "accuracy": 0.99
+      },
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-SCR_USDT",
+    "status": "analyzed",
+    "current_price": 0.2545,
+    "price_change_24h": null,
+    "volume_24h": 6976494.0,
+    "indicators": {
+      "sma_20": 0.24810499999999996,
+      "sma_50": 0.24794799999999997,
+      "ema_12": 0.2509250037176387,
+      "ema_26": 0.24914824238117653,
+      "macd": 0.0017767613364621793,
+      "macd_signal": 0.0007857386874248902,
+      "rsi": 85.81560283687928,
+      "bb_upper": 0.25541885851078533,
+      "bb_lower": 0.2407911414892146
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-SPX_USDT",
+    "status": "analyzed",
+    "current_price": 1.3484,
+    "price_change_24h": null,
+    "volume_24h": 91195515.0,
+    "indicators": {
+      "sma_20": 1.3059600000000002,
+      "sma_50": 1.3038239999999999,
+      "ema_12": 1.3274712334388448,
+      "ema_26": 1.31381249653257,
+      "macd": 0.013658736906274838,
+      "macd_signal": 0.0066419553560780956,
+      "rsi": 89.68750000000017,
+      "bb_upper": 1.3628416832973207,
+      "bb_lower": 1.2490783167026798
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-CGPT_USDT",
+    "status": "analyzed",
+    "current_price": 0.08779,
+    "price_change_24h": null,
+    "volume_24h": 23094646.0,
+    "indicators": {
+      "sma_20": 0.0860085,
+      "sma_50": 0.0859384,
+      "ema_12": 0.08694356841291898,
+      "ema_26": 0.08636091828873306,
+      "macd": 0.0005826501241859156,
+      "macd_signal": 0.0002946492517265339,
+      "rsi": 84.66819221967981,
+      "bb_upper": 0.08845746777395987,
+      "bb_lower": 0.08355953222604014
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-VVV_USDT",
+    "status": "analyzed",
+    "current_price": 2.884,
+    "price_change_24h": null,
+    "volume_24h": 1050180.07,
+    "indicators": {
+      "sma_20": 2.83245,
+      "sma_50": 2.8312,
+      "ema_12": 2.8580217994483332,
+      "ema_26": 2.841775633802562,
+      "macd": 0.016246165645771082,
+      "macd_signal": 0.007989954811481988,
+      "rsi": 84.05797101449284,
+      "bb_upper": 2.9029503919362,
+      "bb_lower": 2.7619496080638
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-GPS_USDT",
+    "status": "analyzed",
+    "current_price": 0.02382,
+    "price_change_24h": null,
+    "volume_24h": 336066594.0,
+    "indicators": {
+      "sma_20": 0.023258,
+      "sma_50": 0.023394999999999996,
+      "ema_12": 0.02341184639489188,
+      "ema_26": 0.023347976250833423,
+      "macd": 6.387014405845673e-05,
+      "macd_signal": -6.319975303660611e-06,
+      "rsi": 85.58558558558559,
+      "bb_upper": 0.0237756302277028,
+      "bb_lower": 0.022740369772297202
+    },
+    "signals": {
+      "rsi_overbought": true,
+      "bb_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "bearish",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "liquidation_heatmap": {
+        "tested_liquidity_cluster": true,
+        "accuracy": 0.99
+      },
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "signal_count": 2
+  },
+  {
+    "pair": "B-RED_USDT",
+    "status": "analyzed",
+    "current_price": 0.2866,
+    "price_change_24h": null,
+    "volume_24h": 19492782.0,
+    "indicators": {
+      "sma_20": 0.27910500000000005,
+      "sma_50": 0.277988,
+      "ema_12": 0.2819260260716472,
+      "ema_26": 0.27983340209591784,
+      "macd": 0.0020926239757293463,
+      "macd_signal": 0.0011652652954823504,
+      "rsi": 93.79844961240296,
+      "bb_upper": 0.2862670270579596,
+      "bb_lower": 0.2719429729420405
+    },
+    "signals": {
+      "rsi_overbought": true,
+      "bb_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "bearish",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "liquidation_heatmap": {
+        "tested_liquidity_cluster": true,
+        "accuracy": 0.99
+      },
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "signal_count": 2
+  },
+  {
+    "pair": "B-WCT_USDT",
+    "status": "analyzed",
+    "current_price": 0.3384,
+    "price_change_24h": null,
+    "volume_24h": 296604710.0,
+    "indicators": {
+      "sma_20": 0.33167,
+      "sma_50": 0.33409599999999995,
+      "ema_12": 0.33398810545441227,
+      "ema_26": 0.33331898794332165,
+      "macd": 0.0006691175110906111,
+      "macd_signal": -0.0004943374738013759,
+      "rsi": 84.0909090909088,
+      "bb_upper": 0.33768475379029667,
+      "bb_lower": 0.3256552462097034
+    },
+    "signals": {
+      "rsi_overbought": true,
+      "bb_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "bearish",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "liquidation_heatmap": {
+        "tested_liquidity_cluster": true,
+        "accuracy": 0.99
+      },
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "signal_count": 2
+  },
+  {
+    "pair": "B-DEEP_USDT",
+    "status": "analyzed",
+    "current_price": 0.1356,
+    "price_change_24h": null,
+    "volume_24h": 38729349.0,
+    "indicators": {
+      "sma_20": 0.1320465,
+      "sma_50": 0.1320076,
+      "ema_12": 0.13354554218605488,
+      "ema_26": 0.13255262322087838,
+      "macd": 0.0009929189651765036,
+      "macd_signal": 0.0004416970788365397,
+      "rsi": 93.7397034596377,
+      "bb_upper": 0.13592791740252605,
+      "bb_lower": 0.12816508259747397
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "atr_projection",
+    "prime_strategies": {
+      "liquidation_heatmap": {
+        "tested_liquidity_cluster": true,
+        "accuracy": 0.99
+      },
+      "atr_projection": {
+        "atr_break": "True",
+        "accuracy": 1.0
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  },
+  {
+    "pair": "B-SQD_USDT",
+    "status": "analyzed",
+    "current_price": 0.18458,
+    "price_change_24h": null,
+    "volume_24h": 55306244.0,
+    "indicators": {
+      "sma_20": 0.182429,
+      "sma_50": 0.18235759999999998,
+      "ema_12": 0.1840210121092025,
+      "ema_26": 0.1830082990798006,
+      "macd": 0.001012713029401896,
+      "macd_signal": 0.0006261753435030697,
+      "rsi": 76.03550295857983,
+      "bb_upper": 0.18704546435683106,
+      "bb_lower": 0.17781253564316896
+    },
+    "signals": {
+      "sma_bullish": true,
+      "rsi_overbought": true
+    },
+    "sl": 0.02,
+    "tp": 0.04,
+    "lev": 5,
+    "direction": "conflict",
+    "best_strategy": "rsi_macd_divergence",
+    "prime_strategies": {
+      "rsi_macd_divergence": {
+        "rsi_macd_divergence": "True",
+        "accuracy": 0.86
+      }
+    },
+    "executable_trade": true,
+    "conflict": true,
+    "conflict_bullish": [
+      "sma_bullish"
+    ],
+    "conflict_bearish": [
+      "rsi_overbought"
+    ],
+    "signal_count": 2
+  }
+]

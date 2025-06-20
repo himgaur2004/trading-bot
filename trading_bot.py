@@ -74,11 +74,19 @@ class TradingBot:
             trades = self.exchange.fetch_trades(symbol, limit=100)
             
             # Format data for strategies
+            df_market = pd.DataFrame(
+                ohlcv,
+                columns=['timestamp', 'open', 'high', 'low', 'close', 'volume']
+            )
+            if not df_market.empty:
+                if 'time' in df_market.columns:
+                    df_market['timestamp'] = pd.to_datetime(df_market['time'], unit='ms')
+                    df_market.set_index('timestamp', inplace=True)
+                elif 'timestamp' in df_market.columns:
+                    df_market['timestamp'] = pd.to_datetime(df_market['timestamp'], unit='ms')
+                    df_market.set_index('timestamp', inplace=True)
             market_data = {
-                'market': pd.DataFrame(
-                    ohlcv,
-                    columns=['timestamp', 'open', 'high', 'low', 'close', 'volume']
-                ).set_index('timestamp'),
+                'market': df_market,
                 'order_book': orderbook,
                 'trades': trades
             }

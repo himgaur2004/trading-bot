@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-06-20T10:26:59.562763",
+  "total_pairs_analyzed": 20,
+  "trading_opportunities": 1,
+  "top_opportunities": [
+    {
+      "pair": "B-LINK_USDT",
+      "status": "analyzed",
+      "current_price": 13.19,
+      "price_change_24h": null,
+      "volume_24h": 1194684.45,
+      "indicators": {
+        "sma_20": 13.0855,
+        "sma_50": 13.0318,
+        "ema_12": 13.122437699469025,
+        "ema_26": 13.085273348895402,
+        "macd": 0.03716435057362233,
+        "macd_signal": 0.027895024632927472,
+        "rsi": 76.00000000000017,
+        "bb_upper": 13.187371952650599,
+        "bb_lower": 12.9836280473494
+      },
+      "signals": {
+        "rsi_overbought": true,
+        "bb_overbought": true
+      },
+      "signal_count": 2
+    }
+  ]
+}
