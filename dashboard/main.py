@@ -67,7 +67,7 @@ bot = st.session_state.binance_bot
 st.title("📊 Binance Trading Dashboard")
 
 # Debug: Show loaded pairs
-st.write("Loaded pairs:", bot.working_pairs[:5])
+st.write(f"Loaded {len(bot.working_pairs)} pairs:", bot.working_pairs[:10])
 
 if not bot.working_pairs:
     st.error("No Binance pairs loaded. Check your API/network.")
@@ -83,7 +83,9 @@ def get_opportunities():
     try:
         bot.candle_data = bot.fetch_all_binance_candles(bot.working_pairs[:50], interval='15m', limit=100)
         analyses = bot.analyze_all_pairs(bot.candle_data)
+        st.write(f"Fetched {len(analyses)} analyses. Sample:", analyses[:2])
         opportunities = bot.filter_trading_opportunities(analyses)
+        st.write(f"Opportunities found: {len(opportunities)}. Sample:", opportunities[:2])
         # Only bullish/bearish
         filtered = [opp for opp in opportunities if opp.get('direction') in ['bullish', 'bearish']]
         # Add star for best
@@ -91,13 +93,13 @@ def get_opportunities():
             best = max(filtered, key=lambda x: x.get('signal_count', 0))
             for opp in filtered:
                 opp['star'] = (opp is best)
-        return filtered
+        return filtered, analyses
     except Exception as e:
         st.error(f"Error fetching opportunities: {e}")
-        return []
+        return [], []
 
 # Get and display opportunities
-data = get_opportunities()
+data, all_analyses = get_opportunities()
 
 # DataFrame for table
 if data:
@@ -150,7 +152,8 @@ if data:
         fig.update_layout(template='plotly_dark', height=500)
         st.plotly_chart(fig, use_container_width=True)
 else:
-    st.info("No actionable trading opportunities found.")
+    st.warning("No actionable trading opportunities found. Showing all analyses for debugging:")
+    st.write(all_analyses[:5])
 
 # Performance metrics (mock)
 st.subheader("Performance Metrics (Mock)")
